@@ -1,0 +1,87 @@
+//
+//  SteppedSlider.swift
+//  CustomKit
+//
+//  Copyright 2026 Kaizōsha. Developed by Kaizō Konpaku.
+//
+
+import Foundation
+import SwiftUI
+
+/// A tactile, drag-only slider for selecting one of several discrete values.
+///
+/// Stops are filtered to finite values, de-duplicated, sorted, and presented
+/// with equal spacing. The binding may use `Float`, `Double`, `CGFloat`, or
+/// another `BinaryFloatingPoint` type.
+@MainActor
+public struct SteppedSlider<Value: BinaryFloatingPoint>: View {
+    @Binding private var value: Value
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.layoutDirection) private var layoutDirection
+
+    private let stops: [Value]
+    private let style: SteppedSliderStyle
+    private let direction: SteppedSliderDirection
+    private let accessibilityLabel: String
+    private let accessibilityValue: (Value) -> String
+    private let onEditingChanged: (Bool) -> Void
+
+    /// Creates a stepped slider.
+    ///
+    /// - Parameters:
+    ///   - value: The selected value. User adjustments write a normalized stop.
+    ///   - stops: The available values. Invalid values and duplicates are
+    ///     discarded, and the remaining values are sorted and equally spaced.
+    ///   - style: Visual geometry, colors, animation, and haptic feedback.
+    ///   - direction: Horizontal value order. The Kaizōsha design keeps lower
+    ///     values on the left by default.
+    ///   - accessibilityLabel: A localized name for the adjusted setting.
+    ///   - accessibilityValue: A localized description of a selected value.
+    ///   - onEditingChanged: Called once when dragging begins and once when it
+    ///     ends or is cancelled. Accessibility adjustments use the same
+    ///     balanced lifecycle.
+    public init(
+        value: Binding<Value>,
+        stops: [Value],
+        style: SteppedSliderStyle = .init(),
+        direction: SteppedSliderDirection = .leftToRight,
+        accessibilityLabel: String = String(localized: "Slider"),
+        accessibilityValue: @escaping (Value) -> String = {
+            Double($0).formatted(
+                .number.precision(.fractionLength(0...3))
+            )
+        },
+        onEditingChanged: @escaping (Bool) -> Void = { _ in }
+    ) {
+        _value = value
+        self.stops = stops
+        self.style = style
+        self.direction = direction
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityValue = accessibilityValue
+        self.onEditingChanged = onEditingChanged
+    }
+
+    public var body: some View {
+        let doubleStops = SteppedSliderMath.normalizedStops(
+            stops.map { Double($0) },
+            fallback: Double(value)
+        )
+
+        SteppedSliderRepresentable(
+            value: Binding(
+                get: { Double(value) },
+                set: { value = Value($0) }
+            ),
+            stops: doubleStops,
+            style: style,
+            direction: direction.resolved(for: layoutDirection),
+            isEnabled: isEnabled,
+            reduceMotion: reduceMotion,
+            accessibilityLabel: accessibilityLabel,
+            accessibilityValue: { accessibilityValue(Value($0)) },
+            onEditingChanged: onEditingChanged
+        )
+    }
+}
