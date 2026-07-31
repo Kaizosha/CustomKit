@@ -9,14 +9,14 @@ Build tactile, native-feeling SwiftUI controls for iOS and iPadOS.
 ## Overview
 
 CustomKit is a local, dependency-free control library. Its first component,
-``SteppedSlider``, binds a value to one of several equally spaced stops and
+``Slider``, binds a value to one of several equally spaced stops and
 provides drag-only selection, fine adjustment, haptic feedback, accessibility,
 layout-direction handling, and focused appearance customization.
 
 ```swift
 @State private var value = 1.0
 
-SteppedSlider(
+CustomKit.Slider(
     value: $value,
     stops: [0.5, 1, 1.25, 1.5, 2],
     accessibilityLabel: "Playback speed",
@@ -34,13 +34,13 @@ Developed by Kaizōsha and created by Kaizō Konpaku.
 
 ### Essentials
 
-- <doc:UsingSteppedSlider>
+- <doc:UsingSlider>
 
 ### Controls
 
-- ``SteppedSlider``
+- ``Slider``
 
 ### Configuration
 
-- ``SteppedSliderStyle``
-- ``SteppedSliderDirection``
+- ``SliderStyle``
+- ``SliderDirection``

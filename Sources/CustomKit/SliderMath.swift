@@ -1,5 +1,5 @@
 //
-//  SteppedSliderMath.swift
+//  SliderMath.swift
 //  CustomKit
 //
 //  Copyright 2026 Kaizōsha. Developed by Kaizō Konpaku.
@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-enum SteppedSliderMath {
+enum SliderMath {
     static let dragActivationDistance: CGFloat = 4
 
     static func normalizedStops(_ values: [Double], fallback: Double) -> [Double] {
@@ -46,7 +46,7 @@ enum SteppedSliderMath {
         count: Int,
         width: CGFloat,
         railHeight: CGFloat,
-        direction: SteppedSliderResolvedDirection
+        direction: SliderResolvedDirection
     ) -> CGFloat {
         let safeWidth = max(width.finiteOrZero, 0)
         guard count > 1 else {
@@ -68,7 +68,7 @@ enum SteppedSliderMath {
         railHeight: CGFloat,
         count: Int,
         sensitivity: CGFloat,
-        direction: SteppedSliderResolvedDirection
+        direction: SliderResolvedDirection
     ) -> Int {
         let proposedPosition = adjustedPosition(
             from: CGFloat(initialIndex),
@@ -89,7 +89,7 @@ enum SteppedSliderMath {
         railHeight: CGFloat,
         count: Int,
         sensitivity: CGFloat,
-        direction: SteppedSliderResolvedDirection
+        direction: SliderResolvedDirection
     ) -> CGFloat {
         guard count > 1 else {
             return 0
@@ -156,7 +156,7 @@ enum SteppedSliderMath {
         knobCenterX: CGFloat,
         railWidth: CGFloat,
         railHeight: CGFloat,
-        direction: SteppedSliderResolvedDirection
+        direction: SliderResolvedDirection
     ) -> CGRect {
         let safeWidth = max(railWidth.finiteOrZero, 0)
         let radius = max(railHeight.finiteOrZero / 2, 0)

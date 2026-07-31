@@ -1,7 +1,7 @@
 # Kaizōsha’s CustomKit
 
 CustomKit is a focused collection of native-feeling SwiftUI controls for iOS
-and iPadOS. Its first control is `SteppedSlider`, a tactile capsule slider for
+and iPadOS. Its first control is `Slider`, a tactile capsule slider for
 choosing from a finite set of values.
 
 Developed by Kaizōsha and created by Kaizō Konpaku.
@@ -29,7 +29,7 @@ In Xcode, choose **File > Add Package Dependencies** and enter:
 https://github.com/Kaizosha/CustomKit.git
 ```
 
-Select version `0.1.0` or newer, then add the `CustomKit` library to the app
+Select version `0.2.0` or newer, then add the `CustomKit` library to the app
 target.
 
 For a Swift package, add:
@@ -38,7 +38,7 @@ For a Swift package, add:
 dependencies: [
     .package(
         url: "https://github.com/Kaizosha/CustomKit.git",
-        from: "0.1.0"
+        from: "0.2.0"
     )
 ]
 ```
@@ -56,7 +56,7 @@ struct PlaybackSpeedControl: View {
     @State private var value = 1.0
 
     var body: some View {
-        SteppedSlider(
+        CustomKit.Slider(
             value: $value,
             stops: [0.5, 1, 1.25, 1.5, 2],
             accessibilityLabel: "Playback speed",
@@ -68,12 +68,17 @@ struct PlaybackSpeedControl: View {
 }
 ```
 
+SwiftUI also provides a control named `Slider`. CustomKit’s control is
+`CustomKit.Slider`; use `SwiftUI.Slider` when you mean the system continuous
+slider. The module-qualified spelling keeps both controls clear when an app
+imports both frameworks.
+
 The original white appearance is designed for a dark media surface, as shown
 above. On a normal system background, use semantic colors through
-`SteppedSliderStyle`; the customization example below is a ready-made starting
+`SliderStyle`; the customization example below is a ready-made starting
 point for light and dark appearances.
 
-`SteppedSlider` filters invalid values, removes duplicates, and sorts its stops.
+`Slider` filters invalid values, removes duplicates, and sorts its stops.
 Each remaining stop receives equal visual spacing: `[0, 1, 10]` places `1` in
 the center rather than one tenth of the way across the rail. The control
 displays the nearest stop, and a user adjustment writes that stop to the
@@ -85,7 +90,7 @@ provides selection feedback.
 
 ## Customization
 
-Pass a `SteppedSliderStyle` with `style:` to customize the rail, fill, stop
+Pass a `SliderStyle` with `style:` to customize the rail, fill, stop
 dots, thumb, dimensions, shadow, animation, and feedback while preserving the
 same interaction behavior. The default keeps lower values on the left, matching
 the original design. Pass `.automatic` or `.rightToLeft` through `direction:`
@@ -94,7 +99,7 @@ when the host should mirror or explicitly reverse the mapping.
 Only name the values that should differ from the default:
 
 ```swift
-let sliderStyle = SteppedSliderStyle(
+let sliderStyle = CustomKit.SliderStyle(
     trackColor: .secondary.opacity(0.24),
     fillColor: .mint,
     knobColor: .mint,
@@ -107,11 +112,11 @@ The accessibility label describes the setting, and the accessibility value
 closure describes the selected value. Supply localized text from the host app:
 
 ```swift
-SteppedSlider(
+CustomKit.Slider(
     value: $value,
     stops: availableValues,
     style: sliderStyle,
-    direction: .automatic,
+    direction: CustomKit.SliderDirection.automatic,
     accessibilityLabel: String(localized: "Intensity"),
     accessibilityValue: { value in
         value.formatted(.percent)
@@ -161,7 +166,7 @@ rather than treating a macOS command-line build as platform coverage.
 
 ## Documentation
 
-Open the package documentation in Xcode for the complete `SteppedSlider`
+Open the package documentation in Xcode for the complete `Slider`
 behavior and customization contract.
 
 ## License

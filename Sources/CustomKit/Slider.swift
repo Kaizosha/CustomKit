@@ -1,5 +1,5 @@
 //
-//  SteppedSlider.swift
+//  Slider.swift
 //  CustomKit
 //
 //  Copyright 2026 Kaizōsha. Developed by Kaizō Konpaku.
@@ -14,20 +14,20 @@ import SwiftUI
 /// with equal spacing. The binding may use `Float`, `Double`, `CGFloat`, or
 /// another `BinaryFloatingPoint` type.
 @MainActor
-public struct SteppedSlider<Value: BinaryFloatingPoint>: View {
+public struct Slider<Value: BinaryFloatingPoint>: View {
     @Binding private var value: Value
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.layoutDirection) private var layoutDirection
 
     private let stops: [Value]
-    private let style: SteppedSliderStyle
-    private let direction: SteppedSliderDirection
+    private let style: SliderStyle
+    private let direction: SliderDirection
     private let accessibilityLabel: String
     private let accessibilityValue: (Value) -> String
     private let onEditingChanged: (Bool) -> Void
 
-    /// Creates a stepped slider.
+    /// Creates a slider.
     ///
     /// - Parameters:
     ///   - value: The selected value. User adjustments write a normalized stop.
@@ -44,8 +44,8 @@ public struct SteppedSlider<Value: BinaryFloatingPoint>: View {
     public init(
         value: Binding<Value>,
         stops: [Value],
-        style: SteppedSliderStyle = .init(),
-        direction: SteppedSliderDirection = .leftToRight,
+        style: SliderStyle = .init(),
+        direction: SliderDirection = .leftToRight,
         accessibilityLabel: String = String(localized: "Slider"),
         accessibilityValue: @escaping (Value) -> String = {
             Double($0).formatted(
@@ -64,12 +64,12 @@ public struct SteppedSlider<Value: BinaryFloatingPoint>: View {
     }
 
     public var body: some View {
-        let doubleStops = SteppedSliderMath.normalizedStops(
+        let doubleStops = SliderMath.normalizedStops(
             stops.map { Double($0) },
             fallback: Double(value)
         )
 
-        SteppedSliderRepresentable(
+        SliderRepresentable(
             value: Binding(
                 get: { Double(value) },
                 set: { value = Value($0) }

@@ -1,5 +1,5 @@
 //
-//  SteppedSliderDirection.swift
+//  SliderDirection.swift
 //  CustomKit
 //
 //  Copyright 2026 Kaizōsha. Developed by Kaizō Konpaku.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-/// The horizontal order used to present and adjust a ``SteppedSlider``.
-public enum SteppedSliderDirection: Equatable, Sendable {
+/// The horizontal order used to present and adjust a ``Slider``.
+public enum SliderDirection: Equatable, Sendable {
     /// The lowest stop appears on the left and the highest appears on the right.
     case leftToRight
 
@@ -19,8 +19,8 @@ public enum SteppedSliderDirection: Equatable, Sendable {
     case automatic
 }
 
-extension SteppedSliderDirection {
-    func resolved(for layoutDirection: LayoutDirection) -> SteppedSliderResolvedDirection {
+extension SliderDirection {
+    func resolved(for layoutDirection: LayoutDirection) -> SliderResolvedDirection {
         switch self {
         case .leftToRight:
             return .leftToRight
@@ -32,7 +32,7 @@ extension SteppedSliderDirection {
     }
 }
 
-enum SteppedSliderResolvedDirection: Equatable, Sendable {
+enum SliderResolvedDirection: Equatable, Sendable {
     case leftToRight
     case rightToLeft
 }
