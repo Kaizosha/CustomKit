@@ -1,5 +1,5 @@
 //
-//  SteppedSliderControlTests.swift
+//  SliderControlTests.swift
 //  CustomKitTests
 //
 //  Copyright 2026 Kaizōsha. Developed by Kaizō Konpaku.
@@ -12,11 +12,11 @@ import UIKit
 @testable import CustomKit
 
 @MainActor
-@Suite("Stepped slider control")
-struct SteppedSliderControlTests {
+@Suite("Slider control")
+struct SliderControlTests {
     @Test("Default style preserves the Kaizōsha geometry")
     func defaultStyleGeometry() {
-        let style = ResolvedSteppedSliderStyle(.init())
+        let style = ResolvedSliderStyle(.init())
 
         #expect(style.controlHeight == 56)
         #expect(style.restingRailHeight == 44)
@@ -31,7 +31,7 @@ struct SteppedSliderControlTests {
 
     @Test("Unsafe custom geometry is normalized")
     func normalizesCustomStyleGeometry() {
-        let style = ResolvedSteppedSliderStyle(
+        let style = ResolvedSliderStyle(
             .init(
                 controlHeight: 20,
                 restingRailHeight: -3,
@@ -137,7 +137,7 @@ struct SteppedSliderControlTests {
 
     @Test("Resting views use configured geometry")
     func laysOutCustomGeometry() throws {
-        let style = SteppedSliderStyle(
+        let style = SliderStyle(
             controlHeight: 64,
             restingRailHeight: 36,
             activeRailHeight: 44,
@@ -202,11 +202,11 @@ struct SteppedSliderControlTests {
 
     private func makeControl(
         stops: [Double] = [0.5, 1, 1.25, 1.5, 2],
-        style: SteppedSliderStyle = .init(hapticsEnabled: false),
-        direction: SteppedSliderResolvedDirection = .leftToRight,
+        style: SliderStyle = .init(hapticsEnabled: false),
+        direction: SliderResolvedDirection = .leftToRight,
         isEnabled: Bool = true
-    ) -> SteppedSliderControl {
-        let control = SteppedSliderControl()
+    ) -> SliderControl {
+        let control = SliderControl()
         control.configure(
             stops: stops,
             style: style,
@@ -230,7 +230,7 @@ private final class ControlEventRecorder {
 
     private(set) var events: [Event] = []
 
-    init(control: SteppedSliderControl) {
+    init(control: SliderControl) {
         control.eventObserver = { [weak self] event in
             guard let self else {
                 return

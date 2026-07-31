@@ -1,10 +1,10 @@
-# Using SteppedSlider
+# Using Slider
 
 Bind a value to a finite set of tactile, equally spaced positions.
 
 ## Overview
 
-``SteppedSlider`` is a horizontal SwiftUI control backed by UIKit. It presents
+``Slider`` is a horizontal SwiftUI control backed by UIKit. It presents
 a capsule rail, progress fill, stop dots, and a circular thumb. It is designed
 for small sets of discrete choices such as playback rate, intensity, zoom, or
 quality.
@@ -21,7 +21,7 @@ struct SpeedPicker: View {
     @State private var speed = 1.0
 
     var body: some View {
-        SteppedSlider(
+        CustomKit.Slider(
             value: $speed,
             stops: [0.5, 1, 1.25, 1.5, 2],
             accessibilityLabel: "Playback speed",
@@ -33,8 +33,12 @@ struct SpeedPicker: View {
 }
 ```
 
+SwiftUI also declares a `Slider`. Use `CustomKit.Slider` for this discrete
+control and `SwiftUI.Slider` for the system continuous control so both remain
+unambiguous in source and type annotations.
+
 The default white appearance is designed for dark media surfaces. Supply a
-``SteppedSliderStyle`` with semantic colors when placing the control on a
+``SliderStyle`` with semantic colors when placing the control on a
 system background.
 
 CustomKit filters non-finite values, removes duplicate stops, and sorts the
@@ -48,12 +52,12 @@ center even though its numeric distance from the other values is unequal.
 
 ## Customize Presentation
 
-Create a ``SteppedSliderStyle`` and pass it through `style:` to customize the
+Create a ``SliderStyle`` and pass it through `style:` to customize the
 rail, progress fill, dots, thumb, dimensions, shadow, animation, and feedback.
 Keep the defaults when the host only needs tint-level adaptation.
 
 ```swift
-let sliderStyle = SteppedSliderStyle(
+let sliderStyle = CustomKit.SliderStyle(
     trackColor: .secondary.opacity(0.24),
     fillColor: .mint,
     knobColor: .mint,
@@ -61,7 +65,7 @@ let sliderStyle = SteppedSliderStyle(
     activeRailHeight: 44
 )
 
-SteppedSlider(
+CustomKit.Slider(
     value: $intensity,
     stops: intensityStops,
     style: sliderStyle,
@@ -76,16 +80,16 @@ when creating a custom style.
 
 ## Choose a Direction
 
-The default ``SteppedSliderDirection`` keeps lower values on the left, matching
+The default ``SliderDirection`` keeps lower values on the left, matching
 the original design. Pass `.automatic` to follow the interface layout direction
 or use an explicit direction when the underlying concept has an inherent
 mapping.
 
 ```swift
-SteppedSlider(
+CustomKit.Slider(
     value: $value,
     stops: stops,
-    direction: .automatic,
+    direction: CustomKit.SliderDirection.automatic,
     accessibilityLabel: label,
     accessibilityValue: formatValue
 )
@@ -99,7 +103,7 @@ with right-to-left localization rather than reversing the stop array.
 Use `onEditingChanged` to coordinate temporary interface state:
 
 ```swift
-SteppedSlider(
+CustomKit.Slider(
     value: $value,
     stops: stops,
     accessibilityLabel: label,

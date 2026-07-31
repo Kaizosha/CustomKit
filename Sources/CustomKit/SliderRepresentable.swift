@@ -1,5 +1,5 @@
 //
-//  SteppedSliderRepresentable.swift
+//  SliderRepresentable.swift
 //  CustomKit
 //
 //  Copyright 2026 Kaizōsha. Developed by Kaizō Konpaku.
@@ -9,11 +9,11 @@ import SwiftUI
 import UIKit
 
 @MainActor
-struct SteppedSliderRepresentable: UIViewRepresentable {
+struct SliderRepresentable: UIViewRepresentable {
     @Binding var value: Double
     let stops: [Double]
-    let style: SteppedSliderStyle
-    let direction: SteppedSliderResolvedDirection
+    let style: SliderStyle
+    let direction: SliderResolvedDirection
     let isEnabled: Bool
     let reduceMotion: Bool
     let accessibilityLabel: String
@@ -24,21 +24,21 @@ struct SteppedSliderRepresentable: UIViewRepresentable {
         Coordinator(parent: self)
     }
 
-    func makeUIView(context: Context) -> SteppedSliderControl {
-        let control = SteppedSliderControl()
+    func makeUIView(context: Context) -> SliderControl {
+        let control = SliderControl()
         context.coordinator.connect(to: control)
         update(control, coordinator: context.coordinator)
         return control
     }
 
-    func updateUIView(_ control: SteppedSliderControl, context: Context) {
+    func updateUIView(_ control: SliderControl, context: Context) {
         context.coordinator.parent = self
         context.coordinator.connect(to: control)
         update(control, coordinator: context.coordinator)
     }
 
     static func dismantleUIView(
-        _ control: SteppedSliderControl,
+        _ control: SliderControl,
         coordinator: Coordinator
     ) {
         control.cancelActiveTracking()
@@ -47,7 +47,7 @@ struct SteppedSliderRepresentable: UIViewRepresentable {
     }
 
     private func update(
-        _ control: SteppedSliderControl,
+        _ control: SliderControl,
         coordinator: Coordinator
     ) {
         control.configure(
@@ -67,14 +67,14 @@ struct SteppedSliderRepresentable: UIViewRepresentable {
 
     @MainActor
     final class Coordinator: NSObject {
-        var parent: SteppedSliderRepresentable
-        private weak var control: SteppedSliderControl?
+        var parent: SliderRepresentable
+        private weak var control: SliderControl?
 
-        init(parent: SteppedSliderRepresentable) {
+        init(parent: SliderRepresentable) {
             self.parent = parent
         }
 
-        func connect(to control: SteppedSliderControl) {
+        func connect(to control: SliderControl) {
             guard self.control !== control else {
                 return
             }
@@ -102,15 +102,15 @@ struct SteppedSliderRepresentable: UIViewRepresentable {
             control = nil
         }
 
-        @objc private func editingDidBegin(_ sender: SteppedSliderControl) {
+        @objc private func editingDidBegin(_ sender: SliderControl) {
             parent.onEditingChanged(true)
         }
 
-        @objc private func valueChanged(_ sender: SteppedSliderControl) {
+        @objc private func valueChanged(_ sender: SliderControl) {
             parent.value = sender.value
         }
 
-        @objc private func editingDidEnd(_ sender: SteppedSliderControl) {
+        @objc private func editingDidEnd(_ sender: SliderControl) {
             parent.value = sender.value
             parent.onEditingChanged(false)
         }
@@ -118,19 +118,19 @@ struct SteppedSliderRepresentable: UIViewRepresentable {
 }
 
 @MainActor
-final class SteppedSliderControl: UIControl {
+final class SliderControl: UIControl {
     var value: Double {
         get { stops[selectedIndex] }
         set {
-            selectedIndex = SteppedSliderMath.nearestIndex(to: newValue, in: stops)
+            selectedIndex = SliderMath.nearestIndex(to: newValue, in: stops)
             updatePresentation()
         }
     }
 
     private(set) var stops: [Double] = [0]
     private(set) var hasActiveTracking = false
-    private(set) var resolvedStyle = ResolvedSteppedSliderStyle(.init())
-    private(set) var resolvedDirection = SteppedSliderResolvedDirection.leftToRight
+    private(set) var resolvedStyle = ResolvedSliderStyle(.init())
+    private(set) var resolvedDirection = SliderResolvedDirection.leftToRight
     var eventObserver: ((UIControl.Event) -> Void)?
 
     private let trackView = UIView()
@@ -188,14 +188,14 @@ final class SteppedSliderControl: UIControl {
         trackView.frame = railFrame
         trackView.layer.cornerRadius = railHeight / 2
 
-        let knobCenterX = SteppedSliderMath.position(
+        let knobCenterX = SliderMath.position(
             for: selectedIndex,
             count: stops.count,
             width: railFrame.width,
             railHeight: railHeight,
             direction: resolvedDirection
         )
-        fillView.frame = SteppedSliderMath.fillFrame(
+        fillView.frame = SliderMath.fillFrame(
             knobCenterX: knobCenterX,
             railWidth: railFrame.width,
             railHeight: railHeight,
@@ -204,7 +204,7 @@ final class SteppedSliderControl: UIControl {
         fillView.layer.cornerRadius = railHeight / 2
 
         for index in stopViews.indices {
-            let centerX = SteppedSliderMath.position(
+            let centerX = SliderMath.position(
                 for: index,
                 count: stops.count,
                 width: railFrame.width,
@@ -265,7 +265,7 @@ final class SteppedSliderControl: UIControl {
 
         if !hasActiveTracking {
             guard hypot(horizontalDelta, verticalDelta)
-                >= SteppedSliderMath.dragActivationDistance
+                >= SliderMath.dragActivationDistance
             else {
                 return true
             }
@@ -275,13 +275,13 @@ final class SteppedSliderControl: UIControl {
             emit(.editingDidBegin)
         }
 
-        trackingPosition = SteppedSliderMath.adjustedPosition(
+        trackingPosition = SliderMath.adjustedPosition(
             from: trackingPosition,
             horizontalTranslation: point.x - lastTouchPoint.x,
             width: bounds.width,
             railHeight: resolvedStyle.activeRailHeight,
             count: stops.count,
-            sensitivity: SteppedSliderMath.sensitivity(
+            sensitivity: SliderMath.sensitivity(
                 verticalDistance: verticalDelta,
                 force: touch.force,
                 maximumPossibleForce: touch.maximumPossibleForce
@@ -289,7 +289,7 @@ final class SteppedSliderControl: UIControl {
             direction: resolvedDirection
         )
         lastTouchPoint = point
-        let nextIndex = SteppedSliderMath.index(
+        let nextIndex = SliderMath.index(
             for: trackingPosition,
             count: stops.count
         )
@@ -333,8 +333,8 @@ final class SteppedSliderControl: UIControl {
 
     func configure(
         stops newStops: [Double],
-        style: SteppedSliderStyle,
-        direction: SteppedSliderResolvedDirection,
+        style: SliderStyle,
+        direction: SliderResolvedDirection,
         isEnabled: Bool,
         reduceMotion: Bool,
         accessibilityLabel: String,
@@ -349,9 +349,9 @@ final class SteppedSliderControl: UIControl {
 
         let previousValue = value
         stops = newStops.isEmpty ? [previousValue] : newStops
-        selectedIndex = SteppedSliderMath.nearestIndex(to: previousValue, in: stops)
+        selectedIndex = SliderMath.nearestIndex(to: previousValue, in: stops)
 
-        resolvedStyle = ResolvedSteppedSliderStyle(style)
+        resolvedStyle = ResolvedSliderStyle(style)
         resolvedDirection = direction
         self.reduceMotion = reduceMotion
         valueDescription = accessibilityValue
@@ -390,7 +390,7 @@ final class SteppedSliderControl: UIControl {
 
         registerForTraitChanges(
             [UITraitUserInterfaceStyle.self, UITraitAccessibilityContrast.self]
-        ) { (control: SteppedSliderControl, _) in
+        ) { (control: SliderControl, _) in
             control.applyAppearance()
         }
     }

@@ -1,5 +1,5 @@
 //
-//  SteppedSliderStyle.swift
+//  SliderStyle.swift
 //  CustomKit
 //
 //  Copyright 2026 Kaizōsha. Developed by Kaizō Konpaku.
@@ -8,12 +8,12 @@
 import CoreGraphics
 import SwiftUI
 
-/// The appearance and tactile feedback of a ``SteppedSlider``.
+/// The appearance and tactile feedback of a ``Slider``.
 ///
 /// The default value is the original Kaizōsha design: a 44-point capsule that
 /// expands to 52 points while dragging, centered six-point stops, and a white
 /// circular knob.
-public struct SteppedSliderStyle {
+public struct SliderStyle {
     /// The unfilled rail color.
     public var trackColor: Color
 
@@ -62,7 +62,7 @@ public struct SteppedSliderStyle {
     /// Whether crossing a stop produces system selection feedback.
     public var hapticsEnabled: Bool
 
-    /// Creates a stepped-slider appearance.
+    /// Creates a slider appearance.
     public init(
         trackColor: Color = .white.opacity(0.28),
         fillColor: Color = .white,
@@ -100,8 +100,8 @@ public struct SteppedSliderStyle {
     }
 }
 
-struct ResolvedSteppedSliderStyle {
-    let source: SteppedSliderStyle
+struct ResolvedSliderStyle {
+    let source: SliderStyle
     let controlHeight: CGFloat
     let restingRailHeight: CGFloat
     let activeRailHeight: CGFloat
@@ -112,7 +112,7 @@ struct ResolvedSteppedSliderStyle {
     let knobShadowOffset: CGSize
     let animationDuration: TimeInterval
 
-    init(_ source: SteppedSliderStyle) {
+    init(_ source: SliderStyle) {
         self.source = source
 
         controlHeight = max(source.controlHeight.finiteOrZero, 44)

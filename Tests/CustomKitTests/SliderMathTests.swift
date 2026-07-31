@@ -1,5 +1,5 @@
 //
-//  SteppedSliderMathTests.swift
+//  SliderMathTests.swift
 //  CustomKitTests
 //
 //  Copyright 2026 Kaizōsha. Developed by Kaizō Konpaku.
@@ -11,11 +11,11 @@ import Testing
 
 @testable import CustomKit
 
-@Suite("Stepped slider policy")
-struct SteppedSliderMathTests {
+@Suite("Slider policy")
+struct SliderMathTests {
     @Test("Stops are finite, unique, and sorted")
     func normalizesStops() {
-        let result = SteppedSliderMath.normalizedStops(
+        let result = SliderMath.normalizedStops(
             [2, .nan, 1, 2, .infinity, -.infinity, -1],
             fallback: 7
         )
@@ -26,13 +26,13 @@ struct SteppedSliderMathTests {
     @Test("An empty normalized collection uses a safe fallback")
     func fallsBackForInvalidStops() {
         #expect(
-            SteppedSliderMath.normalizedStops(
+            SliderMath.normalizedStops(
                 [.nan, .infinity],
                 fallback: 3
             ) == [3]
         )
         #expect(
-            SteppedSliderMath.normalizedStops(
+            SliderMath.normalizedStops(
                 [],
                 fallback: .nan
             ) == [0]
@@ -43,30 +43,30 @@ struct SteppedSliderMathTests {
     func findsNearestStop() {
         let stops = [0.0, 2, 4]
 
-        #expect(SteppedSliderMath.nearestIndex(to: -10, in: stops) == 0)
-        #expect(SteppedSliderMath.nearestIndex(to: 1, in: stops) == 0)
-        #expect(SteppedSliderMath.nearestIndex(to: 3.2, in: stops) == 2)
-        #expect(SteppedSliderMath.nearestIndex(to: 99, in: stops) == 2)
-        #expect(SteppedSliderMath.nearestIndex(to: .nan, in: stops) == 0)
+        #expect(SliderMath.nearestIndex(to: -10, in: stops) == 0)
+        #expect(SliderMath.nearestIndex(to: 1, in: stops) == 0)
+        #expect(SliderMath.nearestIndex(to: 3.2, in: stops) == 2)
+        #expect(SliderMath.nearestIndex(to: 99, in: stops) == 2)
+        #expect(SliderMath.nearestIndex(to: .nan, in: stops) == 0)
     }
 
     @Test("Stops use equal visual spacing")
     func positionsStops() {
-        let left = SteppedSliderMath.position(
+        let left = SliderMath.position(
             for: 0,
             count: 5,
             width: 280,
             railHeight: 44,
             direction: .leftToRight
         )
-        let center = SteppedSliderMath.position(
+        let center = SliderMath.position(
             for: 2,
             count: 5,
             width: 280,
             railHeight: 44,
             direction: .leftToRight
         )
-        let right = SteppedSliderMath.position(
+        let right = SliderMath.position(
             for: 4,
             count: 5,
             width: 280,
@@ -81,14 +81,14 @@ struct SteppedSliderMathTests {
 
     @Test("Right-to-left presentation mirrors every stop")
     func mirrorsStopPositions() {
-        let low = SteppedSliderMath.position(
+        let low = SliderMath.position(
             for: 0,
             count: 5,
             width: 280,
             railHeight: 44,
             direction: .rightToLeft
         )
-        let high = SteppedSliderMath.position(
+        let high = SliderMath.position(
             for: 4,
             count: 5,
             width: 280,
@@ -103,7 +103,7 @@ struct SteppedSliderMathTests {
     @Test("A one-stop slider stays centered")
     func centersSingleStop() {
         #expect(
-            SteppedSliderMath.position(
+            SliderMath.position(
                 for: 0,
                 count: 1,
                 width: 280,
@@ -112,7 +112,7 @@ struct SteppedSliderMathTests {
             ) == 140
         )
         #expect(
-            SteppedSliderMath.position(
+            SliderMath.position(
                 for: 0,
                 count: 1,
                 width: 280,
@@ -124,7 +124,7 @@ struct SteppedSliderMathTests {
 
     @Test("Drag geometry shares the marker span")
     func mapsDragToStops() {
-        let next = SteppedSliderMath.index(
+        let next = SliderMath.index(
             initialIndex: 0,
             horizontalTranslation: 30,
             width: 280,
@@ -133,7 +133,7 @@ struct SteppedSliderMathTests {
             sensitivity: 1,
             direction: .leftToRight
         )
-        let mirroredNext = SteppedSliderMath.index(
+        let mirroredNext = SliderMath.index(
             initialIndex: 0,
             horizontalTranslation: -30,
             width: 280,
@@ -142,7 +142,7 @@ struct SteppedSliderMathTests {
             sensitivity: 1,
             direction: .rightToLeft
         )
-        let clamped = SteppedSliderMath.index(
+        let clamped = SliderMath.index(
             initialIndex: 2,
             horizontalTranslation: 2_000,
             width: 280,
@@ -159,7 +159,7 @@ struct SteppedSliderMathTests {
 
     @Test("Sensitivity changes do not move a stationary drag")
     func keepsIncrementalDragStable() {
-        let initialPosition = SteppedSliderMath.adjustedPosition(
+        let initialPosition = SliderMath.adjustedPosition(
             from: 1,
             horizontalTranslation: 20,
             width: 280,
@@ -168,7 +168,7 @@ struct SteppedSliderMathTests {
             sensitivity: 1,
             direction: .leftToRight
         )
-        let stationaryPosition = SteppedSliderMath.adjustedPosition(
+        let stationaryPosition = SliderMath.adjustedPosition(
             from: initialPosition,
             horizontalTranslation: 0,
             width: 280,
@@ -184,7 +184,7 @@ struct SteppedSliderMathTests {
     @Test("Invalid and degenerate drag geometry stays safe")
     func handlesDegenerateDragGeometry() {
         #expect(
-            SteppedSliderMath.index(
+            SliderMath.index(
                 initialIndex: 1,
                 horizontalTranslation: .nan,
                 width: 0,
@@ -195,7 +195,7 @@ struct SteppedSliderMathTests {
             ) == 1
         )
         #expect(
-            SteppedSliderMath.index(
+            SliderMath.index(
                 initialIndex: 0,
                 horizontalTranslation: 100,
                 width: 0,
@@ -222,7 +222,7 @@ struct SteppedSliderMathTests {
         verticalDistance: CGFloat,
         expected: CGFloat
     ) {
-        let result = SteppedSliderMath.sensitivity(
+        let result = SliderMath.sensitivity(
             verticalDistance: verticalDistance,
             force: 0,
             maximumPossibleForce: 0
@@ -233,17 +233,17 @@ struct SteppedSliderMathTests {
 
     @Test("Pressure sensitivity is bounded")
     func boundsPressureSensitivity() {
-        let light = SteppedSliderMath.sensitivity(
+        let light = SliderMath.sensitivity(
             verticalDistance: 0,
             force: 0.01,
             maximumPossibleForce: 1
         )
-        let reference = SteppedSliderMath.sensitivity(
+        let reference = SliderMath.sensitivity(
             verticalDistance: 0,
             force: 0.25,
             maximumPossibleForce: 1
         )
-        let heavy = SteppedSliderMath.sensitivity(
+        let heavy = SliderMath.sensitivity(
             verticalDistance: 0,
             force: 1,
             maximumPossibleForce: 1
@@ -256,13 +256,13 @@ struct SteppedSliderMathTests {
 
     @Test("Progress fill grows from the semantic low edge")
     func laysOutFillDirection() {
-        let leftToRight = SteppedSliderMath.fillFrame(
+        let leftToRight = SliderMath.fillFrame(
             knobCenterX: 22,
             railWidth: 280,
             railHeight: 44,
             direction: .leftToRight
         )
-        let rightToLeft = SteppedSliderMath.fillFrame(
+        let rightToLeft = SliderMath.fillFrame(
             knobCenterX: 258,
             railWidth: 280,
             railHeight: 44,
@@ -276,15 +276,15 @@ struct SteppedSliderMathTests {
     @Test("Automatic direction follows the host layout")
     func resolvesDirection() {
         #expect(
-            SteppedSliderDirection.leftToRight.resolved(for: .rightToLeft)
+            SliderDirection.leftToRight.resolved(for: .rightToLeft)
                 == .leftToRight
         )
         #expect(
-            SteppedSliderDirection.rightToLeft.resolved(for: .leftToRight)
+            SliderDirection.rightToLeft.resolved(for: .leftToRight)
                 == .rightToLeft
         )
         #expect(
-            SteppedSliderDirection.automatic.resolved(for: .rightToLeft)
+            SliderDirection.automatic.resolved(for: .rightToLeft)
                 == .rightToLeft
         )
     }
