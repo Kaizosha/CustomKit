@@ -1,174 +1,99 @@
-# Kaizōsha’s CustomKit
+# CustomKit
 
-CustomKit is a focused collection of native-feeling SwiftUI controls for iOS
-and iPadOS. Its first control is `Slider`, a tactile capsule slider for
-choosing from a finite set of values.
+Reusable SwiftUI details from Kaizōsha's apps, with an interactive catalog to try them.
 
-Developed by Kaizōsha and created by Kaizō Konpaku.
+The catalog has 16 working examples. Each opens a live preview, its own customization sheet, reset controls, and copyable usage code.
 
-- Kaizōsha: [kaizosha.org](https://kaizosha.org)
-- Organization: [github.com/Kaizosha](https://github.com/Kaizosha)
-- Author: [Kaizō Konpaku](https://x.com/kaizookonpaku)
+## Run the catalog
 
-CustomKit works entirely on device. It has no network behavior, analytics,
-persistence, external assets, or third-party package dependencies.
+Open [CustomKitCatalog.xcodeproj](Examples/CustomKitCatalog/CustomKitCatalog.xcodeproj) in Xcode 27. Choose the **CustomKitCatalog** scheme and an iOS 27 simulator.
 
-## Requirements
+The example project expects these repositories beside CustomKit:
 
-- Swift 6.4
-- Xcode 27 or newer
-- iOS 27 or iPadOS 27
+- `KaizoshaPlayerKit` supplies real local video playback.
+- `KaizoshaCaptionKit` supplies subtitle segments and display modes.
+- `Sekai` supplies the native Metal globe.
 
-CustomKit does not support macOS, Mac Catalyst, tvOS, watchOS, or visionOS.
+The app bundles a 12-second silent Kaizōsha motion study. PlayerKit can also open a movie chosen from Files. The caption example has a local timed bilingual transcript. Sekai renders a real globe with city markers, a connecting arc, rotation, zoom, and appearance controls.
 
-## Installation
+The public `CustomKit` package has no external package dependencies. You can import the components without the catalog or the other kits.
 
-In Xcode, choose **File > Add Package Dependencies** and enter:
+## Use the components
 
-```text
-https://github.com/Kaizosha/CustomKit.git
-```
-
-Select version `0.2.0` or newer, then add the `CustomKit` library to the app
-target.
-
-For a Swift package, add:
-
-```swift
-dependencies: [
-    .package(
-        url: "https://github.com/Kaizosha/CustomKit.git",
-        from: "0.2.0"
-    )
-]
-```
-
-Then add `.product(name: "CustomKit", package: "CustomKit")` to the consuming
-target.
-
-## Minimal Use
+Add this repository as a local Swift package. Choose the `CustomKit` product for your app. Choose `CustomKitCatalog` to embed the interactive catalog.
 
 ```swift
 import CustomKit
 import SwiftUI
 
-struct PlaybackSpeedControl: View {
-    @State private var value = 1.0
+StartExperience(
+	configuration: .together,
+	onPrimaryAction: { openLibrary() },
+	onControls: { showControls() }
+)
 
-    var body: some View {
-        CustomKit.Slider(
-            value: $value,
-            stops: [0.5, 1, 1.25, 1.5, 2],
-            accessibilityLabel: "Playback speed",
-            accessibilityValue: { "\($0.formatted())×" }
-        )
-        .padding()
-        .background(.black, in: .rect(cornerRadius: 20))
-    }
+KaizoshaLogo(configuration: .init(size: 160, interactive: true))
+
+Button("Add clip", systemImage: "plus") { addClip() }
+	.customKitButton(.primary, tint: .teal)
+
+KitSwitcher(selection: $translation, title: "Live translation")
+
+KitSegmentedControl(selection: $mode, options: [
+	KitSegment("Original", value: "original"),
+	KitSegment("Both", value: "both")
+])
+
+content.hapticSheet(isPresented: $showCredits, detents: [.large]) {
+	MadeByKaizosha(appName: "Together", purpose: "Bring worlds together.")
+}
+
+PullToClear(isEmpty: messages.isEmpty, onClear: { messages.removeAll() }) {
+	ConversationRows(messages: messages)
 }
 ```
 
-SwiftUI also provides a control named `Slider`. CustomKit’s control is
-`CustomKit.Slider`; use `SwiftUI.Slider` when you mean the system continuous
-slider. The module-qualified spelling keeps both controls clear when an app
-imports both frameworks.
+Your app owns actions, data, persistence, and engine lifecycle. CustomKit owns the visual behavior. `CustomKit.Slider` is the original discrete, drag-only capsule slider. Its existing API and behavior are preserved.
 
-The original white appearance is designed for a dark media surface, as shown
-above. On a normal system background, use semantic colors through
-`SliderStyle`; the customization example below is a ready-made starting
-point for light and dark appearances.
+## Find a component
 
-`Slider` filters invalid values, removes duplicates, and sorts its stops.
-Each remaining stop receives equal visual spacing: `[0, 1, 10]` places `1` in
-the center rather than one tenth of the way across the rail. The control
-displays the nearest stop, and a user adjustment writes that stop to the
-binding.
+| Folder | Public API |
+| --- | --- |
+| `Branding` | `KaizoshaLogo`, `LogoConfiguration` |
+| `Launch` | `LaunchAnimation`, `LaunchConfiguration`, `StartTemplate`, `StartExperience`, `StartConfiguration` |
+| `Controls` | `KitButtonStyle`, `KitButtonRole`, `KitSwitcher`, `KitSegmentedControl`, `KitSegment`, `Slider`, `SliderStyle`, `SliderDirection` |
+| `Lists` | `LiquidListRow` |
+| `Sheets` | `hapticSheet`, `MadeByKaizosha` |
+| `Playback` | `PlaybackControls` |
+| `Captions` | `CaptionCue`, `CaptionOverlay`, `CaptionTranscript` |
+| `Interaction` | `PullToClear` |
 
-Selection is drag-only. A tap does not jump the value. Moving vertically away
-from the rail enables finer horizontal adjustment, while crossing a stop
-provides selection feedback.
+Components live in `Sources/CustomKit`. Catalog previews and customization forms live in `Sources/CustomKitCatalog`. Real kit integrations and the movie fixture live in `Examples/CustomKitCatalog`.
 
-## Customization
+See [the component reference](Documentation/Components.md) for behavior and customization. See [the design notes](Documentation/Design.md) for source provenance and package boundaries.
 
-Pass a `SliderStyle` with `style:` to customize the rail, fill, stop
-dots, thumb, dimensions, shadow, animation, and feedback while preserving the
-same interaction behavior. The default keeps lower values on the left, matching
-the original design. Pass `.automatic` or `.rightToLeft` through `direction:`
-when the host should mirror or explicitly reverse the mapping.
+## Verify changes
 
-Only name the values that should differ from the default:
+Use Xcode 27 and iOS 27. This package imports UIKit and requires an iOS destination.
 
-```swift
-let sliderStyle = CustomKit.SliderStyle(
-    trackColor: .secondary.opacity(0.24),
-    fillColor: .mint,
-    knobColor: .mint,
-    restingRailHeight: 36,
-    activeRailHeight: 44
-)
+```sh
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+xcodebuild -scheme CustomKit-Package \
+  -destination 'platform=iOS Simulator,id=YOUR_SIMULATOR_ID' test
+
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+xcodebuild -project Examples/CustomKitCatalog/CustomKitCatalog.xcodeproj \
+  -scheme CustomKitCatalog \
+  -destination 'platform=iOS Simulator,id=YOUR_SIMULATOR_ID' \
+  -parallel-testing-enabled NO test
 ```
 
-The accessibility label describes the setting, and the accessibility value
-closure describes the selected value. Supply localized text from the host app:
+The UI suite opens all 16 entries, checks every customization sheet and usage sheet, and exercises queue actions, welcome navigation, local playback, caption seeking, and pull-to-clear. It saves screenshots in the test result bundle.
 
-```swift
-CustomKit.Slider(
-    value: $value,
-    stops: availableValues,
-    style: sliderStyle,
-    direction: CustomKit.SliderDirection.automatic,
-    accessibilityLabel: String(localized: "Intensity"),
-    accessibilityValue: { value in
-        value.formatted(.percent)
-    },
-    onEditingChanged: { isEditing in
-        interactionIsActive = isEditing
-    }
-)
-```
+After adding example app files, run `python3 Scripts/generate-example-project.py`. The generated project is checked in, so XcodeGen is not required. `Scripts/generate-sample.py` reproduces the motion study using Pillow and FFmpeg.
 
-VoiceOver exposes a control with multiple stops as adjustable and moves one
-stop at a time. A one-stop fallback is announced as a static value.
-`onEditingChanged` reports `true` after a drag becomes active and `false` when
-the interaction ends or is cancelled. Programmatic binding updates do not
-start an editing session.
-
-## Behavior and Limitations
-
-- The control is horizontal and UIKit-backed, with a SwiftUI public API.
-- Stops are discrete, sorted, and equally spaced; continuous ranges are not
-  supported.
-- Provide at least one finite stop. Invalid and duplicate stops do not create
-  positions; if none remain, the current bound value becomes the sole fallback
-  stop.
-- Dragging changes the selection; tapping the rail intentionally does not.
-- The host owns value meaning, formatting, localization, and persistence.
-- Custom styles should retain a comfortable touch target and sufficient
-  contrast in every system appearance.
-- CustomKit does not render labels for individual stops. Place explanatory
-  content next to the slider when the values are not self-evident.
-
-## Validation
-
-Before shipping a customized slider:
-
-1. Build the host app with Xcode 27 for iPhone and iPad.
-2. Exercise every stop in left-to-right and right-to-left layouts.
-3. Verify VoiceOver increment, decrement, label, and value announcements.
-4. Check light and dark appearance, Increased Contrast, Reduce Transparency,
-   and Reduce Motion.
-5. Test touch cancellation, compact layouts, rotation, Split View, and Stage
-   Manager.
-6. Run the package tests and the host app’s focused UI tests.
-
-Because CustomKit imports UIKit, validate it with an iOS or iPadOS destination
-rather than treating a macOS command-line build as platform coverage.
-
-## Documentation
-
-Open the package documentation in Xcode for the complete `Slider`
-behavior and customization contract.
+Vibration needs a physical device for a sensory check. Simulator tests verify state and native presentation.
 
 ## License
 
-CustomKit is available under the [MIT License](LICENSE).
+Developed by Kaizōsha and Kaizō Konpaku. Available under the [MIT License](LICENSE).

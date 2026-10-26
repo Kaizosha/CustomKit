@@ -9,10 +9,12 @@ let package = Package(
         .iOS(.v27)
     ],
     products: [
-        .library(name: "CustomKit", targets: ["CustomKit"])
+        .library(name: "CustomKit", targets: ["CustomKit"]),
+        .library(name: "CustomKitCatalog", targets: ["CustomKitCatalog"])
     ],
     targets: [
-        .target(name: "CustomKit"),
+        .target(name: "CustomKit", resources: [.process("Branding/Resources")]),
+        .target(name: "CustomKitCatalog", dependencies: ["CustomKit"]),
         .testTarget(
             name: "CustomKitTests",
             dependencies: ["CustomKit"]

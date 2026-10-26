@@ -8,10 +8,10 @@ Build tactile, native-feeling SwiftUI controls for iOS and iPadOS.
 
 ## Overview
 
-CustomKit is a local, dependency-free control library. Its first component,
-``Slider``, binds a value to one of several equally spaced stops and
-provides drag-only selection, fine adjustment, haptic feedback, accessibility,
-layout-direction handling, and focused appearance customization.
+CustomKit contains reusable branding, launch templates, native glass controls,
+haptic sheets, caption views, playback controls, and pull-to-clear interactions.
+Each component takes host-owned values and callbacks. The separate CustomKitCatalog
+product provides interactive examples and customization sheets.
 
 ```swift
 @State private var value = 1.0
@@ -39,6 +39,26 @@ Developed by Kaizōsha and created by Kaizō Konpaku.
 ### Controls
 
 - ``Slider``
+- ``KitButtonStyle``
+- ``KitSwitcher``
+- ``KitSegmentedControl``
+- ``LiquidListRow``
+
+### Branding and presentation
+
+- ``KaizoshaLogo``
+- ``LaunchAnimation``
+- ``StartTemplate``
+- ``StartExperience``
+- ``MadeByKaizosha``
+- ``PullToClear``
+
+### Media
+
+- ``PlaybackControls``
+- ``CaptionCue``
+- ``CaptionOverlay``
+- ``CaptionTranscript``
 
 ### Configuration
 
