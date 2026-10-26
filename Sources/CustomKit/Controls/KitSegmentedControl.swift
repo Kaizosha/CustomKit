@@ -42,5 +42,7 @@ public struct KitSegmentedControl<Selection: Hashable>: View {
             }
         }
         .pickerStyle(.segmented)
+        .padding(6)
+        .glassEffect(.regular, in: .capsule)
     }
 }

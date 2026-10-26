@@ -18,8 +18,6 @@ struct PlayerKitExample: View {
     var body: some View {
         ExperimentPage(
             title: "PlayerKit",
-            subtitle: "A local movie, real transport, and one native player.",
-            source: "Together · KaizoshaPlayerKit",
             api: """
             import KaizoshaPlayer
             import KaizoshaPlayerUI
@@ -36,11 +34,8 @@ struct PlayerKitExample: View {
             VStack(spacing: 24) {
                 if let session {
                     NativePlayerView(session: session)
-                        .frame(height: 230)
-                        .clipShape(.rect(cornerRadius: 24))
+                        .aspectRatio(16 / 9, contentMode: .fit)
                         .accessibilityIdentifier("player.video")
-                    Text(session.resource?.title ?? "Choose a movie")
-                        .font(.system(.title3, design: .serif))
                     if showsNativeControls {
                         transport(session)
                     }
@@ -53,13 +48,8 @@ struct PlayerKitExample: View {
                     ProgressView("Preparing local movie")
                         .frame(height: 230)
                 }
-                Button("Choose local movie", systemImage: "folder") {
-                    isChoosingMovie = true
-                }
-                .buttonStyle(.glass)
-                .controlSize(.large)
-                .accessibilityIdentifier("player.choose")
             }
+            .frame(maxWidth: 760)
             .padding(24)
         } controls: {
             Section("Transport") {
@@ -84,6 +74,13 @@ struct PlayerKitExample: View {
                     }
                 }
                 Button("Choose local movie", systemImage: "folder") { isChoosingMovie = true }
+                    .accessibilityIdentifier("player.choose")
+                    .fileImporter(isPresented: $isChoosingMovie, allowedContentTypes: [.movie]) { result in
+                        switch result {
+                        case .success(let url): selectedURL = url
+                        case .failure: failure = "The movie could not be opened."
+                        }
+                    }
             }
         }
         .task(id: selectedURL) { await loadMovie() }
@@ -95,12 +92,6 @@ struct PlayerKitExample: View {
             session?.close()
             session = nil
             releaseFileAccess()
-        }
-        .fileImporter(isPresented: $isChoosingMovie, allowedContentTypes: [.movie]) { result in
-            switch result {
-            case .success(let url): selectedURL = url
-            case .failure: failure = "The movie could not be opened."
-            }
         }
     }
 

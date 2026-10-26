@@ -23,8 +23,6 @@ struct SekaiKitExample: View {
     var body: some View {
         ExperimentPage(
             title: "SekaiKit",
-            subtitle: "A language connection between Chicago and Tokyo.",
-            source: "Sekai · Native Metal globe",
             api: """
             import SekaiKit
 
@@ -37,7 +35,7 @@ struct SekaiKitExample: View {
             )
             """
         ) {
-            VStack(spacing: 20) {
+            ZStack {
                 Sekai(
                     camera: $camera,
                     style: style,
@@ -47,36 +45,13 @@ struct SekaiKitExample: View {
                     arcs: arcs,
                     onStatusChange: { status = $0 }
                 )
-                .frame(maxWidth: 460)
+                .frame(maxWidth: 640)
                 .accessibilityIdentifier("sekai.globe")
                 if case .failed = status {
                     Label("Metal rendering is unavailable.", systemImage: "exclamationmark.triangle")
                         .foregroundStyle(.secondary)
                 }
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Chicago → Tokyo")
-                            .font(.system(.title3, design: .serif))
-                        Text("ENGLISH / 日本語")
-                            .font(.caption.monospaced())
-                            .foregroundStyle(.secondary)
-                    }
-                    Spacer()
-                    Image(systemName: "globe.americas")
-                        .font(.title2)
-                        .foregroundStyle(.teal)
-                }
-                HStack(spacing: 12) {
-                    Button("Chicago") { camera.focus(on: chicago) }
-                    Button("Tokyo") { camera.focus(on: tokyo) }
-                }
-                .buttonStyle(.glass)
-                .controlSize(.large)
-                Text("Drag to rotate. Pinch to zoom.")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
             }
-            .padding(24)
         } controls: {
             Section("Globe") {
                 Picker("Appearance", selection: $appearance) {
@@ -97,6 +72,10 @@ struct SekaiKitExample: View {
                 LabeledContent("Glow", value: glow.formatted(.percent))
                 SwiftUI.Slider(value: $glow, in: 0...0.6)
                     .accessibilityLabel("Glow")
+            }
+            Section("Camera") {
+                Button("Focus Chicago") { camera.focus(on: chicago) }
+                Button("Focus Tokyo") { camera.focus(on: tokyo) }
             }
             Section {
                 Button("Reset globe", systemImage: "arrow.counterclockwise") {

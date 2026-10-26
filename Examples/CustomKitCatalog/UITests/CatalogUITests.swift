@@ -10,49 +10,75 @@ final class CatalogUITests: XCTestCase {
         app.launch()
     }
 
-    func testEveryTemplateOpensControlsAndUsage() {
-        let routes = ["logo", "launch", "together-start", "pinch-start", "skeleton-start", "liquid-list", "buttons", "switcher", "segments", "slider", "haptic-sheet", "made-by", "pull-clear", "playerkit", "captionkit", "sekaikit"]
+    func testEveryElementOpensCustomizationAndUsage() {
+        let routes = ["logo", "launch", "together-start", "pinch-start", "skeleton-start", "liquid-list", "buttons", "button-neutral", "button-destructive", "button-reset", "button-success", "button-working", "switcher", "segments", "slider", "haptic-sheet", "made-by", "pull-clear", "playerkit", "captionkit", "sekaikit"]
         for route in routes {
             if route != routes.first { app.terminate(); app.launch() }
             open(route)
             let customize = app.buttons["experiment.customize"]
             XCTAssertTrue(customize.waitForExistence(timeout: 8), route)
+            XCTAssertTrue(app.navigationBars.buttons["experiment.customize"].exists, route)
+            XCTAssertFalse(app.buttons["experiment.code"].exists, route)
+            XCTAssertFalse(app.staticTexts["This example is live. Try it, then open the controls to make it yours."].exists, route)
             attach(route)
             customize.tap()
-            let done = app.buttons["customize.done"]
-            XCTAssertTrue(done.waitForExistence(timeout: 4), "Missing controls for \(route)")
+            XCTAssertTrue(app.buttons["customize.done"].waitForExistence(timeout: 4), route)
             attach("\(route)-controls")
-            done.tap()
-            app.buttons["experiment.code"].tap()
+            let code = app.buttons["experiment.code"]
+            reveal(code)
+            code.tap()
             XCTAssertTrue(app.navigationBars["Use in your app"].waitForExistence(timeout: 4), route)
-            XCTAssertTrue(app.buttons["Copy"].exists)
-            app.buttons["Done"].tap()
+            XCTAssertTrue(app.buttons["Copy"].exists, route)
         }
     }
 
-    func testQueueActionsAndReadingSwitcher() {
-        open("buttons")
-        app.buttons["Add clip"].tap()
-        XCTAssertTrue(app.staticTexts["2 clips in your queue."].exists)
-        app.buttons["Export captions"].tap()
-        XCTAssertTrue(app.staticTexts["Ready to keep."].exists)
-        app.buttons["Clear queue"].tap()
-        XCTAssertTrue(app.staticTexts["0 clips in your queue."].exists)
-        XCTAssertFalse(app.buttons["Clear queue"].isEnabled)
+    func testIndividualButtonsAndLiveLabel() {
+        for route in ["buttons", "button-neutral", "button-destructive", "button-reset", "button-success", "button-working"] {
+            if route != "buttons" { app.terminate(); app.launch() }
+            open(route)
+            let button = app.buttons["button.element"]
+            XCTAssertTrue(button.waitForExistence(timeout: 4), route)
+            XCTAssertEqual(app.buttons.matching(identifier: "button.element").count, 1, route)
+            XCTAssertFalse(app.staticTexts["1 clip in your queue."].exists)
+            button.tap()
+        }
         app.terminate(); app.launch()
-        open("switcher")
-        XCTAssertTrue(app.staticTexts["Where shall we go today?"].exists)
-        app.switches.firstMatch.tap()
-        XCTAssertFalse(app.staticTexts["Where shall we go today?"].exists)
+        open("buttons")
+        app.buttons["experiment.customize"].tap()
+        let label = app.textFields["Label"]
+        XCTAssertTrue(label.waitForExistence(timeout: 4))
+        label.tap()
+        let current = label.value as? String ?? ""
+        label.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count) + "Open")
+        app.buttons["customize.done"].tap()
+        XCTAssertEqual(app.buttons["button.element"].label, "Open")
+        attach("button-customized")
     }
 
-    func testStartActionAndCreditsSheet() {
+    func testSwitcherAndSegments() {
+        open("switcher")
+        let toggle = app.switches.firstMatch
+        XCTAssertTrue(toggle.waitForExistence(timeout: 4))
+        XCTAssertEqual(toggle.value as? String, "1")
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap()
+        XCTAssertEqual(toggle.value as? String, "0")
+        XCTAssertFalse(app.staticTexts["Where shall we go today?"].exists)
+        app.terminate(); app.launch()
+        open("segments")
+        let original = app.segmentedControls.buttons["Original"]
+        XCTAssertTrue(original.waitForExistence(timeout: 4))
+        original.tap()
+        XCTAssertTrue(original.isSelected)
+    }
+
+    func testStartRemainsStartAndCreditsSheet() {
         open("together-start")
         let play = app.buttons["Play"]
-        if !play.isHittable { app.scrollViews.firstMatch.swipeUp() }
-        XCTAssertTrue(play.waitForExistence(timeout: 4))
+        XCTAssertTrue(play.waitForExistence(timeout: 6))
         play.tap()
-        XCTAssertTrue(app.staticTexts["Your next watch."].waitForExistence(timeout: 4))
+        XCTAssertTrue(play.exists)
+        XCTAssertFalse(app.staticTexts["Your next watch."].exists)
+        attach("together-start-full")
         app.terminate(); app.launch()
         open("made-by")
         app.buttons["credits.open"].tap()
@@ -65,33 +91,38 @@ final class CatalogUITests: XCTestCase {
         open("playerkit")
         let play = app.buttons["Play"]
         XCTAssertTrue(play.waitForExistence(timeout: 12))
-        if !play.isHittable { app.scrollViews.firstMatch.swipeUp() }
         play.tap()
         XCTAssertTrue(app.buttons["Pause"].waitForExistence(timeout: 8))
         app.buttons["Pause"].tap()
+        XCTAssertFalse(app.buttons["player.choose"].exists)
         attach("player-playing")
         app.terminate(); app.launch()
         open("captionkit")
-        let position = app.sliders["Playback position"]
-        if !position.isHittable { app.scrollViews.firstMatch.swipeUp() }
-        XCTAssertTrue(position.waitForExistence(timeout: 4))
-        position.adjust(toNormalizedSliderPosition: 0.6)
+        let caption = app.buttons["0:08, A little closer, in every language."]
+        XCTAssertTrue(caption.waitForExistence(timeout: 4))
+        caption.tap()
+        XCTAssertTrue(caption.isSelected)
         attach("captions-seeked")
     }
 
-    func testPullClearAndEmptyState() {
+    func testPullClearAndRestoreFromCustomization() {
         open("pull-clear")
         let conversation = app.descendants(matching: .any)["pull.conversation"].firstMatch
         XCTAssertTrue(conversation.waitForExistence(timeout: 4))
         let start = conversation.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.12))
-        let end = conversation.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.95))
+        let end = conversation.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75))
         start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
-        XCTAssertTrue(app.staticTexts["0 messages · 1 clears"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["pull.empty"].waitForExistence(timeout: 5))
         start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
-        XCTAssertTrue(app.staticTexts["0 messages · 1 clears"].exists)
+        XCTAssertTrue(app.staticTexts["pull.empty"].exists)
+        XCTAssertFalse(app.buttons["Restore"].exists)
         attach("pull-empty")
-        app.buttons["Restore"].tap()
-        XCTAssertTrue(app.staticTexts["3 messages · 1 clears"].exists)
+        app.buttons["experiment.customize"].tap()
+        let restore = app.buttons["Restore conversation"]
+        reveal(restore)
+        restore.tap()
+        app.buttons["customize.done"].tap()
+        XCTAssertTrue(app.staticTexts["Shall we take the long way home?"].exists)
     }
 
     func testLiveCustomizationAndNativeSheetDetents() {
@@ -99,7 +130,7 @@ final class CatalogUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["日本語"].exists)
         app.buttons["experiment.customize"].tap()
         let nativeNames = app.switches["Native language names"]
-        attach("customize-before-toggle")
+        XCTAssertTrue(nativeNames.waitForExistence(timeout: 4))
         nativeNames.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap()
         XCTAssertEqual(nativeNames.value as? String, "0")
         attach("customize-without-native-names")
@@ -122,13 +153,23 @@ final class CatalogUITests: XCTestCase {
     private func open(_ route: String) {
         let row = app.buttons["catalog.\(route)"]
         let scroll = app.scrollViews.firstMatch
-        for _ in 0..<10 {
-            if row.exists && row.isHittable && row.frame.midY < app.frame.maxY - 180 { break }
+        for _ in 0..<12 {
+            if row.exists && row.isHittable && row.frame.midY < app.frame.maxY - 120 { break }
             if row.exists && row.frame.midY < 120 { scroll.swipeDown() }
             else { scroll.swipeUp() }
         }
         XCTAssertTrue(row.exists && row.isHittable, "Missing route \(route)")
         row.tap()
+    }
+
+    private func reveal(_ element: XCUIElement) {
+        for _ in 0..<8 {
+            if element.exists && element.isHittable { return }
+            let form = app.collectionViews.firstMatch
+            if form.exists { form.swipeUp() }
+            else { app.swipeUp() }
+        }
+        XCTAssertTrue(element.exists && element.isHittable)
     }
 
     private func attach(_ name: String) {

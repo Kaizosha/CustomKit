@@ -14,7 +14,7 @@ public struct StartConfiguration {
         subtitle: String,
         actionTitle: String,
         actionSymbol: String,
-        accent: Color = .teal,
+        accent: Color = .primary,
         showsBrand: Bool = true,
         appName: String = "CustomKit"
     ) {
@@ -35,7 +35,7 @@ public struct StartConfiguration {
 
     public static var pinch: Self {
         .init(title: ["Too", "Long?", "Just Pinch."],
-              subtitle: "pinch to see less, know more. summarize web pages and explain selected text with intelligence.",
+              subtitle: "pinch to see less, know more - summarize web pages and explain selected text with intelligence",
               actionTitle: "Enable in Safari", actionSymbol: "safari", appName: "TL;Pinch")
     }
 
@@ -61,57 +61,65 @@ public struct StartTemplate: View {
         self.onControls = onControls
     }
 
+    @ScaledMetric(relativeTo: .title3) private var sectionSpacing = 45
+    @ScaledMetric(relativeTo: .body) private var actionHeight = 50
+
     public var body: some View {
         GeometryReader { geometry in
             ScrollView {
-                VStack(alignment: .leading, spacing: 32) {
-                    if configuration.showsBrand {
-                        KaizoshaLogo(configuration: .init(size: 76, interactive: false))
-                            .frame(maxWidth: .infinity)
-                            .padding(.top, 16)
-                    }
-                    VStack(alignment: .leading, spacing: 0) {
-                        ForEach(Array(configuration.title.enumerated()), id: \.offset) { _, line in
-                            Text(line)
-                                .font(.largeTitle.bold())
-                                .fontDesign(.serif)
-                        }
-                        Text(configuration.subtitle)
-                            .font(.subheadline.weight(.medium))
-                            .fontDesign(.monospaced)
-                            .foregroundStyle(.secondary)
-                            .padding(.top, 8)
-                    }
-                    .fixedSize(horizontal: false, vertical: true)
-
-                    GlassEffectContainer(spacing: 16) {
-                        HStack(spacing: 16) {
-                            Button(action: onPrimaryAction) {
-                                Label(configuration.actionTitle, systemImage: configuration.actionSymbol)
-                                    .font(.body.weight(.semibold))
-                                    .frame(maxWidth: .infinity, minHeight: 50)
+                VStack(spacing: 0) {
+                    VStack(alignment: .leading, spacing: sectionSpacing) {
+                        VStack(alignment: .leading) {
+                            ForEach(Array(configuration.title.enumerated()), id: \.offset) { _, line in
+                                Text(line)
+                                    .font(.largeTitle.bold())
+                                    .fontDesign(.serif)
                             }
-                            .buttonStyle(.glass)
-                            .buttonBorderShape(.capsule)
-                            .tint(configuration.accent)
+                            Text(configuration.subtitle)
+                                .font(.subheadline.weight(.medium))
+                                .fontDesign(.monospaced)
+                                .foregroundStyle(.secondary)
+                                .padding(.top, 4)
+                        }
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
-                            if let onControls {
-                                Button(action: onControls) {
-                                    Image(systemName: "slider.horizontal.3")
-                                        .frame(width: 50, height: 50)
+                        GlassEffectContainer(spacing: 16) {
+                            HStack(spacing: 16) {
+                                Button(action: onPrimaryAction) {
+                                    Label(configuration.actionTitle, systemImage: configuration.actionSymbol)
+                                        .font(.body.weight(.semibold))
+                                        .frame(maxWidth: .infinity, minHeight: actionHeight)
                                 }
                                 .buttonStyle(.glass)
-                                .buttonBorderShape(.circle)
-                                .tint(.blue)
-                                .accessibilityLabel("Controls")
+                                .buttonBorderShape(.capsule)
+                                .tint(configuration.accent)
+
+                                if let onControls {
+                                    Button(action: onControls) {
+                                        Image(systemName: "slider.horizontal.3")
+                                            .font(.body.weight(.semibold))
+                                            .frame(width: actionHeight, height: actionHeight)
+                                    }
+                                    .buttonStyle(.glass)
+                                    .buttonBorderShape(.circle)
+                                    .tint(configuration.accent)
+                                    .accessibilityLabel("Controls")
+                                }
                             }
                         }
                     }
-                    Spacer(minLength: 16)
-                    Text("\(configuration.appName) by Kaizōsha")
+                    Spacer(minLength: sectionSpacing)
+                    if configuration.showsBrand {
+                        HStack(spacing: 4) {
+                            Text("\(configuration.appName) by")
+                                .foregroundStyle(.secondary)
+                            Text("Kaizōsha")
+                                .underline()
+                        }
                         .font(.caption)
-                        .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity)
+                    }
                 }
                 .padding(24)
                 .frame(minHeight: geometry.size.height, alignment: .top)

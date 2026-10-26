@@ -26,8 +26,9 @@ public struct KitSwitcher: View {
         }
         .tint(tint)
         .padding(.horizontal, 18)
-        .padding(.vertical, 14)
-        .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 28))
+        .padding(.vertical, 10)
+        .frame(minHeight: 54)
+        .glassEffect(.regular, in: .capsule)
         .sensoryFeedback(.selection, trigger: selection)
     }
 }
