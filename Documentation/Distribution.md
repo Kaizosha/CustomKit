@@ -4,7 +4,7 @@ The shipping app is **CustomKit**, bundle ID `org.kaizosha.CustomKit`, version `
 
 ## Revised build 2
 
-The element-only catalog is archived and signed as version `1.0`, build `2`. The verified archive is `/tmp/CustomKit-1.0-2-final.xcarchive`. Xcode could not upload it because the existing App Store Connect account could not authenticate. Safari also requests Apple sign-in. Build 2 has not been uploaded or assigned to a group.
+The element-only catalog uploaded successfully as version `1.0`, build `2`. Xcode Organizer confirms the completed upload. The verified archive is `/tmp/CustomKit-1.0-2-final.xcarchive`. App Store Connect processing and assignment to the existing internal group still need confirmation because Safari requests Apple sign-in.
 
 ## Current internal beta
 
