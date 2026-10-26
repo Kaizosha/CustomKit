@@ -11,6 +11,7 @@ Verified on October 26, 2026 with Xcode 27, Swift 6.4, and iOS 27 simulators.
 | Pull to clear, empty state, restoration, local playback, caption seeking, and Files presentation | Two focused tests passed | `/tmp/customkit-elements-focused.log` |
 | Dark slider navigation and final TL;Pinch and Skeleton startup views | Passed | `/tmp/customkit-elements-final-r2.log` |
 | Independent source and screenshot review | Passed after correcting slider title contrast | `/tmp/customkit-elements-screens`, `/tmp/customkit-elements-final-screens` |
+| TestFlight delivery | CustomKit 1.0 (2) reports Testing in Kon's Testing; one tester and two builds | `/tmp/customkit-build2-testing.png` |
 | Signed device archive | CustomKit 1.0 (2), company team `564DV375U4`; signature verified | `/tmp/CustomKit-1.0-2-final.xcarchive`, `/tmp/customkit-elements-archive-final.log` |
 | REA inspection of the final device binary | arm64, iOS 27; Mach-O, dependencies, and dispatch inspected | `/tmp/customkit-elements-rea-final` |
 
