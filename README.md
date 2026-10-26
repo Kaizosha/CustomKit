@@ -18,6 +18,8 @@ The app bundles a 12-second silent Kaizōsha motion study. PlayerKit can also op
 
 The public `CustomKit` package has no external package dependencies. You can import the components without the catalog or the other kits.
 
+The shipping app uses `org.kaizosha.CustomKit` on Kaizōsha's company team. See [TestFlight distribution](Documentation/Distribution.md) for archive and upload steps.
+
 ## Use the components
 
 Add this repository as a local Swift package. Choose the `CustomKit` product for your app. Choose `CustomKitCatalog` to embed the interactive catalog.

@@ -35,7 +35,7 @@ def file(path, filetype):
 def phase(name, kind, paths, filetype):
     files = []
     for path in paths:
-        item = file(path, filetype)
+        item = file(path, filetype(path) if callable(filetype) else filetype)
         files.append(add(f"build-{path}", "PBXBuildFile", f"fileRef = {item};"))
     return add(name, kind, f"buildActionMask = 2147483647; files = {sequence(files)}; runOnlyForDeploymentPostprocessing = 0;")
 
@@ -56,9 +56,14 @@ def config_list(name, settings):
 PROJECT.mkdir(parents=True, exist_ok=True)
 source_paths = sorted((EXAMPLE / "Sources").rglob("*.swift")) + sorted((EXAMPLE / "Integrations").rglob("*.swift"))
 test_paths = sorted((EXAMPLE / "UITests").rglob("*.swift"))
-resources = sorted((EXAMPLE / "Resources").glob("*.mov"))
+resource_types = {
+    ".mov": "video.quicktime",
+    ".xcassets": "folder.assetcatalog",
+    ".xcprivacy": "text.xml",
+}
+resources = sorted(path for path in (EXAMPLE / "Resources").iterdir() if path.suffix in resource_types)
 app_sources = phase("app-sources", "PBXSourcesBuildPhase", source_paths, "sourcecode.swift")
-app_resources = phase("app-resources", "PBXResourcesBuildPhase", resources, "video.quicktime")
+app_resources = phase("app-resources", "PBXResourcesBuildPhase", resources, lambda path: resource_types[path.suffix])
 test_sources = phase("test-sources", "PBXSourcesBuildPhase", test_paths, "sourcecode.swift")
 test_frameworks = phase("test-frameworks", "PBXFrameworksBuildPhase", [], "wrapper.framework")
 package_refs = []
@@ -91,9 +96,26 @@ common = {
     "TARGETED_DEVICE_FAMILY": quoted("1,2"),
     "GENERATE_INFOPLIST_FILE": "YES",
     "CODE_SIGN_STYLE": "Automatic",
+    "DEVELOPMENT_TEAM": "564DV375U4",
     "PRODUCT_NAME": quoted("$(TARGET_NAME)"),
 }
-app_settings = dict(common, PRODUCT_NAME="CustomKitCatalog", PRODUCT_MODULE_NAME="CustomKitCatalogApp", PRODUCT_BUNDLE_IDENTIFIER="org.kaizosha.CustomKitCatalog", INFOPLIST_KEY_CFBundleDisplayName=quoted("CustomKit"), INFOPLIST_KEY_UILaunchScreen_Generation="YES", INFOPLIST_KEY_UIApplicationSceneManifest_Generation="YES", CURRENT_PROJECT_VERSION="1", MARKETING_VERSION="1.0", ENABLE_PREVIEWS="YES", INFOPLIST_KEY_UISupportedInterfaceOrientations=quoted("UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"))
+app_settings = dict(
+    common,
+    PRODUCT_NAME="CustomKitCatalog",
+    PRODUCT_MODULE_NAME="CustomKitCatalogApp",
+    PRODUCT_BUNDLE_IDENTIFIER="org.kaizosha.CustomKit",
+    INFOPLIST_KEY_CFBundleDisplayName=quoted("CustomKit"),
+    INFOPLIST_KEY_UILaunchScreen_Generation="YES",
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation="YES",
+    INFOPLIST_KEY_ITSAppUsesNonExemptEncryption="NO",
+    INFOPLIST_KEY_LSApplicationCategoryType=quoted("public.app-category.developer-tools"),
+    CURRENT_PROJECT_VERSION="1",
+    MARKETING_VERSION="1.0",
+    ENABLE_PREVIEWS="YES",
+    SKIP_INSTALL="NO",
+    ASSETCATALOG_COMPILER_APPICON_NAME="AppIcon",
+    INFOPLIST_KEY_UISupportedInterfaceOrientations=quoted("UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"),
+)
 app_configs = config_list("app", app_settings)
 test_configs = config_list("tests", dict(common, PRODUCT_BUNDLE_IDENTIFIER="org.kaizosha.CustomKitCatalogUITests", TEST_TARGET_NAME="CustomKitCatalogApp"))
 app_target = add("app-target", "PBXNativeTarget", f"buildConfigurationList = {app_configs}; buildPhases = {sequence([app_sources, app_frameworks, app_resources])}; buildRules = (); dependencies = (); name = CustomKitCatalogApp; packageProductDependencies = {sequence(products)}; productName = CustomKitCatalog; productReference = {app_product}; productType = \"com.apple.product-type.application\";")

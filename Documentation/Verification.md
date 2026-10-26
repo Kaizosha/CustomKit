@@ -12,6 +12,8 @@ Verified on October 26, 2026 with Xcode 27, Swift 6.4, and iOS 27 simulators.
 | Release simulator build | Passed | `/tmp/customkit-release-final.log` |
 | Original slider implementation | All five moved files match their original Git contents | `Sources/CustomKit/Controls/Slider` |
 | Independent source and screenshot review | No blocking findings | Review by `gpt-6-sol` |
+| Signed iOS archive | CustomKit 1.0 (1), `org.kaizosha.CustomKit`, company team `564DV375U4` | `/tmp/customkit-archive.log`, `/tmp/CustomKit-1.0-1.xcarchive` |
+| Independent release review | Signing verified; icon and privacy resources match source | Review by `gpt-6-sol` |
 
 The first UI run found a parent accessibility identifier that overrode child control identifiers and a row tap beneath the automatic search bar. The final code removes that parent identifier and puts search in the navigation drawer. The full iPhone rerun passed.
 
