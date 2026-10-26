@@ -78,7 +78,7 @@ struct NativeUnlockTogetherControl: UIViewRepresentable {
 }
 
 @MainActor
-final class UnlockSegmentedControl: UISegmentedControl, UIGestureRecognizerDelegate {
+final class UnlockSegmentedControl: UISegmentedControl {
     var action: () -> Void = {}
     var isUnlocked = false {
         didSet {
@@ -94,7 +94,6 @@ final class UnlockSegmentedControl: UISegmentedControl, UIGestureRecognizerDeleg
             selectedGlass.effect = glass
         }
     }
-    private lazy var activationTap = UITapGestureRecognizer(target: self, action: #selector(activate))
     private let selectedGlass = UIVisualEffectView()
     private let selectedTitle = UILabel()
     private lazy var emptySelection = UIGraphicsImageRenderer(size: CGSize(width: 1, height: 1)).image { _ in }
@@ -123,9 +122,7 @@ final class UnlockSegmentedControl: UISegmentedControl, UIGestureRecognizerDeleg
         }
         isAccessibilityElement = true
         accessibilityTraits = [.button, .selected]
-        activationTap.cancelsTouchesInView = false
-        activationTap.delegate = self
-        addGestureRecognizer(activationTap)
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(activate)))
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -178,13 +175,6 @@ final class UnlockSegmentedControl: UISegmentedControl, UIGestureRecognizerDeleg
             width: max(nativeSize.width, ceil(titleSize.width) + 32),
             height: max(nativeSize.height, max(44, ceil(titleFont.lineHeight) + 16))
         )
-    }
-
-    func gestureRecognizer(
-        _ gestureRecognizer: UIGestureRecognizer,
-        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
-    ) -> Bool {
-        gestureRecognizer === activationTap || otherGestureRecognizer === activationTap
     }
 
     override var canBecomeFirstResponder: Bool { true }

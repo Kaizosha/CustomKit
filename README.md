@@ -1,44 +1,59 @@
 # KaizoshaUIKit
 
-Reusable native UI from Kaizōsha's apps, added one component at a time.
+Reusable native components from Kaizōsha's apps. The example app has a plain ordered list. Each destination presents its component and one navigation-bar button that opens live customization, reset, and copyable usage code.
 
-The catalog currently contains one item, **Kaizosha Logo**. Its screen presents the logo and a navigation-bar customization button. All adjustment controls, reset, and usage code live inside the sheet.
+## Add to your app
 
-## Use the logo
-
-Add this repository as a Swift package and select the `KaizoshaUIKit` product. The package requires Xcode 27, Swift 6.4, and iOS 27.
+Add `https://github.com/Kaizosha/KaizoshaUIKit` as a Swift package dependency and select the **KaizoshaUIKit** product. The package, product, and import module all use that name. Requires Xcode 27, Swift 6.4, and iOS 27.
 
 ```swift
 import KaizoshaUIKit
 
 KaizoshaLogo()
-
-KaizoshaLogo(configuration: LogoConfiguration(
-	size: 200,
-	interactive: true,
-	hapticsEnabled: true,
-	motionEnabled: true,
-	refraction: 1
-))
 ```
 
-`LogoConfiguration` also accepts a manual `lightDirection` when device lighting is disabled. An optional `onOpenCredits` callback adds long-press and VoiceOver credits actions. Without that callback the logo has no credits action.
+The package exports these components in catalog order:
 
-When enabling device lighting, add `NSMotionUsageDescription` to your app's Info.plist with a description of how motion lights the logo. The example app includes this description.
+| Catalog item | Public component | Customization |
+| --- | --- | --- |
+| Kaizosha Logo | `KaizoshaLogo` | `LogoConfiguration` |
+| Made by Kaizosha | `MadeByKaizosha` | `CreditsConfiguration` |
+| Unlock Together | `UnlockTogetherControl` | `UnlockTogetherConfiguration` |
+| Translation Strategy Pill | `TranslationStrategyPill` | `TranslationStrategyPillConfiguration` |
+| Language Switcher | `LanguageSwitcher` | Width and titles |
+| Low/High Switcher | `TranslationStrategySwitcher` | `TranslationStrategySwitcherConfiguration` |
+| Masonry Layout | `MasonryGrid` or `MasonryLayout` | Column width, insets, and spacing |
 
-The default mark uses the canonical 160 by 151-point artwork. Direct dragging, the release-velocity spring, and accumulated-travel haptics come from Together. Metal resources belong to the package. Your app does not need to copy shaders into its own default library.
+```swift
+import KaizoshaUIKit
+import SwiftUI
+
+struct LanguageControls: View {
+	@State private var role = LanguageRole.source
+	@State private var strategy = TranslationStrategy.lowLatency
+
+	var body: some View {
+		VStack {
+			LanguageSwitcher(selection: $role)
+			TranslationStrategyPill(selection: $strategy)
+		}
+	}
+}
+```
+
+Your app owns bindings, actions, translation availability, and presentation. Components do not depend on Together sessions, purchases, media engines, or sibling repositories. Metal resources are bundled with the package.
+
+For device lighting on the logo, add `NSMotionUsageDescription` to your app's Info.plist. See [component reference](Documentation/Components.md) for configuration and default behavior.
 
 ## Run the example
 
-Open [KaizoshaUIKit.xcodeproj](Examples/KaizoshaUIKit/KaizoshaUIKit.xcodeproj) and choose the **KaizoshaUIKit** scheme. The project links only this package. It does not require any sibling repository or media engine.
+Open [KaizoshaUIKit.xcodeproj](Examples/KaizoshaUIKit/KaizoshaUIKit.xcodeproj) and choose the **KaizoshaUIKit** scheme.
 
 Run `python3 Scripts/generate-example-project.py` after changing example files. The generated project is checked in.
 
 ## Verify changes
 
-Run `Scripts/verify.sh SIMULATOR_ID` from the checkout root. It runs package tests and the example app's UI tests on an iOS 27 simulator. The UI tests check the one-item list, dragging, live sizing, reset, and usage code, and preserve screenshots in the result bundle.
-
-The simulator cannot verify physical device tilt or how haptics feel. See [verification](Documentation/Verification.md), [design](Documentation/Design.md), and [TestFlight delivery](Documentation/Distribution.md).
+Run `Scripts/verify.sh SIMULATOR_ID` on an iOS 27 simulator. It runs package and gallery UI tests and retains screenshots in result bundles. See [verification](Documentation/Verification.md) and [TestFlight delivery](Documentation/Distribution.md).
 
 ## License
 

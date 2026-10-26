@@ -66,7 +66,6 @@ public struct TranslationStrategyPill: View {
             guidance
                 .presentationCompactAdaptation(.popover)
         }
-        .accessibilityIdentifier("kaizosha.translation-strategy-pill")
     }
 
     private func surface(compact: Bool) -> some View {
@@ -89,6 +88,7 @@ public struct TranslationStrategyPill: View {
                 infoButton(compact: false)
                 switcher
             }
+            .padding(.vertical, 12)
             .frame(maxWidth: .infinity, alignment: .leading)
         } else {
             ViewThatFits(in: .horizontal) {
@@ -100,6 +100,7 @@ public struct TranslationStrategyPill: View {
                     infoButton(compact: false)
                     switcher
                 }
+                .padding(.vertical, 12)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }

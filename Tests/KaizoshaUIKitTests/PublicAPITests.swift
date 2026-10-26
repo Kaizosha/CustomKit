@@ -16,4 +16,19 @@ struct PublicAPITests {
         _ = KaizoshaLogo(configuration: configuration)
         _ = KaizoshaLogo(configuration: configuration, onOpenCredits: {})
     }
+
+    @Test func consumingAppCanConstructEveryComponentWithOneImport() {
+        var credits = CreditsConfiguration.together
+        credits.title = "Made for Kaizōsha."
+        _ = MadeByKaizosha(configuration: credits)
+        var unlock = UnlockTogetherConfiguration()
+        unlock.lockedTitle = "Unlock your app"
+        _ = UnlockTogetherControl(isUnlocked: false, configuration: unlock) { }
+        let strategy = Binding.constant(TranslationStrategy.lowLatency)
+        _ = TranslationStrategySwitcher(selection: strategy)
+        _ = TranslationStrategyPill(selection: strategy)
+        _ = LanguageSwitcher(selection: .constant(LanguageRole.source))
+        _ = MasonryGrid { Color.clear.frame(height: 100) }
+        _ = MasonryLayout { Color.clear.frame(height: 100) }
+    }
 }

@@ -10,9 +10,13 @@ final class LogoUITests: XCTestCase {
         app.launch()
     }
 
-    func testCatalogContainsOnlyTheLogo() {
+    func testCatalogContainsTheRequestedOrder() {
         XCTAssertTrue(app.navigationBars["KaizoshaUIKit"].exists)
-        XCTAssertEqual(app.cells.count, 1)
+        let titles = ["Kaizosha Logo", "Made by Kaizosha", "Unlock Together", "Translation Strategy Pill", "Language Switcher", "Low/High Switcher", "Masonry Layout"]
+        XCTAssertEqual(app.cells.count, titles.count)
+        for (index, title) in titles.enumerated() {
+            XCTAssertTrue(app.cells.element(boundBy: index).staticTexts[title].exists)
+        }
         XCTAssertTrue(app.buttons["catalog.kaizosha-logo"].exists)
         XCTAssertFalse(app.buttons["catalog.playerkit"].exists)
         XCTAssertFalse(app.buttons["catalog.buttons"].exists)
@@ -38,8 +42,8 @@ final class LogoUITests: XCTestCase {
         XCTAssertGreaterThan(logo.frame.width, initialWidth + 30)
         attach("kaizosha-logo-customized")
         app.buttons["component.customize"].tap()
-        reveal(app.buttons["logo.reset"])
-        app.buttons["logo.reset"].tap()
+        reveal(app.buttons["component.reset"])
+        app.buttons["component.reset"].tap()
         app.buttons["customize.done"].tap()
         XCTAssertEqual(logo.frame.width, initialWidth, accuracy: 2)
         app.buttons["component.customize"].tap()
