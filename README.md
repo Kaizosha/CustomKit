@@ -1,100 +1,44 @@
-# CustomKit
+# KaizoshaUIKit
 
-Reusable SwiftUI details from Kaizōsha's apps, with an interactive catalog to try them.
+Reusable native UI from Kaizōsha's apps, added one component at a time.
 
-Each catalog entry opens directly to one element. The navigation bar opens its customization sheet. Usage code and reset controls stay inside that sheet.
+The catalog currently contains one item, **Kaizosha Logo**. Its screen presents the logo and a navigation-bar customization button. All adjustment controls, reset, and usage code live inside the sheet.
 
-## Run the catalog
+## Use the logo
 
-Open [CustomKitCatalog.xcodeproj](Examples/CustomKitCatalog/CustomKitCatalog.xcodeproj) in Xcode 27. Choose the **CustomKitCatalog** scheme and an iOS 27 simulator.
-
-The example project expects these repositories beside CustomKit:
-
-- `KaizoshaPlayerKit` supplies real local video playback.
-- `KaizoshaCaptionKit` supplies subtitle segments and display modes.
-- `Sekai` supplies the native Metal globe.
-
-The app bundles a 12-second silent Kaizōsha motion study. PlayerKit can also open a movie chosen from Files. The caption example has a local timed bilingual transcript. Sekai renders a real globe with city markers, a connecting arc, rotation, zoom, and appearance controls.
-
-The public `CustomKit` package has no external package dependencies. You can import the components without the catalog or the other kits.
-
-The shipping app uses `org.kaizosha.CustomKit` on Kaizōsha's company team. See [TestFlight distribution](Documentation/Distribution.md) for archive and upload steps.
-
-## Use the components
-
-Add this repository as a local Swift package. Choose the `CustomKit` product for your app. Choose `CustomKitCatalog` to embed the interactive catalog.
+Add this repository as a Swift package and select the `KaizoshaUIKit` product. The package requires Xcode 27, Swift 6.4, and iOS 27.
 
 ```swift
-import CustomKit
-import SwiftUI
+import KaizoshaUIKit
 
-StartExperience(
-	configuration: .together,
-	onPrimaryAction: { openLibrary() },
-	onControls: { showControls() }
-)
+KaizoshaLogo()
 
-KaizoshaLogo(configuration: .init(size: 160, interactive: true))
-
-Button("Add clip", systemImage: "plus") { addClip() }
-	.customKitButton(.primary, tint: .teal)
-
-KitSwitcher(selection: $translation, title: "Live translation")
-
-KitSegmentedControl(selection: $mode, options: [
-	KitSegment("Original", value: "original"),
-	KitSegment("Both", value: "both")
-])
-
-content.hapticSheet(isPresented: $showCredits, detents: [.large]) {
-	MadeByKaizosha(appName: "Together", purpose: "Bring worlds together.")
-}
-
-PullToClear(isEmpty: messages.isEmpty, onClear: { messages.removeAll() }) {
-	ConversationRows(messages: messages)
-}
+KaizoshaLogo(configuration: LogoConfiguration(
+	size: 200,
+	interactive: true,
+	hapticsEnabled: true,
+	motionEnabled: true,
+	refraction: 1
+))
 ```
 
-Your app owns actions, data, persistence, and engine lifecycle. CustomKit owns the visual behavior. `CustomKit.Slider` is the original discrete, drag-only capsule slider. Its existing API and behavior are preserved.
+`LogoConfiguration` also accepts a manual `lightDirection` when device lighting is disabled. An optional `onOpenCredits` callback adds long-press and VoiceOver credits actions. Without that callback the logo has no credits action.
 
-## Find a component
+When enabling device lighting, add `NSMotionUsageDescription` to your app's Info.plist with a description of how motion lights the logo. The example app includes this description.
 
-| Folder | Public API |
-| --- | --- |
-| `Branding` | `KaizoshaLogo`, `LogoConfiguration` |
-| `Launch` | `LaunchAnimation`, `LaunchConfiguration`, `StartTemplate`, `StartExperience`, `StartConfiguration` |
-| `Controls` | `KitButtonStyle`, `KitButtonRole`, `KitButtonSurface`, `KitSwitcher`, `KitSegmentedControl`, `KitSegment`, `Slider`, `SliderStyle`, `SliderDirection` |
-| `Lists` | `LiquidListRow` |
-| `Sheets` | `hapticSheet`, `MadeByKaizosha` |
-| `Playback` | `PlaybackControls` |
-| `Captions` | `CaptionCue`, `CaptionOverlay`, `CaptionTranscript` |
-| `Interaction` | `PullToClear` |
+The default mark uses the canonical 160 by 151-point artwork. Direct dragging, the release-velocity spring, and accumulated-travel haptics come from Together. Metal resources belong to the package. Your app does not need to copy shaders into its own default library.
 
-Components live in `Sources/CustomKit`. Catalog previews and customization forms live in `Sources/CustomKitCatalog`. Real kit integrations and the movie fixture live in `Examples/CustomKitCatalog`.
+## Run the example
 
-See [the component reference](Documentation/Components.md) for behavior and customization. See [the design notes](Documentation/Design.md) for source provenance and package boundaries.
+Open [KaizoshaUIKit.xcodeproj](Examples/KaizoshaUIKit/KaizoshaUIKit.xcodeproj) and choose the **KaizoshaUIKit** scheme. The project links only this package. It does not require any sibling repository or media engine.
+
+Run `python3 Scripts/generate-example-project.py` after changing example files. The generated project is checked in.
 
 ## Verify changes
 
-Use Xcode 27 and iOS 27. This package imports UIKit and requires an iOS destination.
+Run `Scripts/verify.sh SIMULATOR_ID` from the checkout root. It runs package tests and the example app's UI tests on an iOS 27 simulator. The UI tests check the one-item list, dragging, live sizing, reset, and usage code, and preserve screenshots in the result bundle.
 
-```sh
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
-xcodebuild -scheme CustomKit-Package \
-  -destination 'platform=iOS Simulator,id=YOUR_SIMULATOR_ID' test
-
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
-xcodebuild -project Examples/CustomKitCatalog/CustomKitCatalog.xcodeproj \
-  -scheme CustomKitCatalog \
-  -destination 'platform=iOS Simulator,id=YOUR_SIMULATOR_ID' \
-  -parallel-testing-enabled NO test
-```
-
-The UI suite opens every element, checks its customization sheet and usage code, and exercises live changes, native sheet detents, local playback, caption seeking, and pull-to-clear. It saves screenshots in the test result bundle.
-
-After adding example app files, run `python3 Scripts/generate-example-project.py`. The generated project is checked in, so XcodeGen is not required. `Scripts/generate-sample.py` reproduces the motion study using Pillow and FFmpeg.
-
-Vibration needs a physical device for a sensory check. Simulator tests verify state and native presentation.
+The simulator cannot verify physical device tilt or how haptics feel. See [verification](Documentation/Verification.md), [design](Documentation/Design.md), and [TestFlight delivery](Documentation/Distribution.md).
 
 ## License
 

@@ -4,21 +4,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "CustomKit",
-    platforms: [
-        .iOS(.v27)
-    ],
-    products: [
-        .library(name: "CustomKit", targets: ["CustomKit"]),
-        .library(name: "CustomKitCatalog", targets: ["CustomKitCatalog"])
-    ],
+    name: "KaizoshaUIKit",
+    platforms: [.iOS(.v27)],
+    products: [.library(name: "KaizoshaUIKit", targets: ["KaizoshaUIKit"])],
     targets: [
-        .target(name: "CustomKit", resources: [.process("Branding/Resources")]),
-        .target(name: "CustomKitCatalog", dependencies: ["CustomKit"]),
-        .testTarget(
-            name: "CustomKitTests",
-            dependencies: ["CustomKit"]
-        )
+        .target(name: "KaizoshaUIKit", resources: [.process("Branding/Resources")]),
+        .testTarget(name: "KaizoshaUIKitTests", dependencies: ["KaizoshaUIKit"])
     ],
     swiftLanguageModes: [.v6]
 )

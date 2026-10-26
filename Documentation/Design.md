@@ -1,38 +1,24 @@
-# CustomKit design
+# KaizoshaUIKit design
 
-The component library contains SwiftUI views, typed configurations, and interaction policies. It has no app sessions, storage, analytics, or external package dependencies. Your apps supply bindings and callbacks.
+The package exports one library, `KaizoshaUIKit`. Components live in `Sources/KaizoshaUIKit`. The private example app lives in `Examples/KaizoshaUIKit`. It presents one ordered list and one element per destination.
 
-The separate `CustomKitCatalog` product owns built-in examples and navigation. One immutable list of `CatalogEntry` values drives grouping, search, labels, and destinations. Each example owns state and controls. Type erasure occurs only at the heterogeneous destination boundary.
+The first component is Kaizosha Logo. The former catalog, media integrations, startup experiments, controls, and other components were removed. Git history preserves earlier work.
 
-The example Xcode app links local PlayerKit, CaptionKit, and Sekai packages. It injects those examples into the catalog. A consuming app can use a button or logo without resolving these packages.
+## Together source
 
-## Source provenance
+The canonical sources are in the sibling Together repository:
 
-| CustomKit component | Original source in sibling repositories |
-| --- | --- |
-| Logo geometry and Metal | `skeleton/Skeleton/Branding/KaizoshaLogoArtwork.swift`, `KaizoshaLogo.metal` |
-| Logo elasticity | `skeleton/Skeleton/Branding/KaizoshaLogoInteraction.swift`, `KaizoshaLogoInteractionPolicy.swift` |
-| Launch chevrons | `skeleton/Skeleton/Views/SkeletonLaunchView.swift` |
-| Start presets | `Together/Together/App/Launch/TogetherStartView.swift`, `TL-Pinch/iOS (App)/StartView.swift`, `skeleton/Skeleton/Views/SkeletonStartView.swift` |
-| Liquid rows | `TL-Pinch/iOS (App)/TogetherListItemSurface.swift` |
-| Action roles | `Together/Together/Shared/UI/TogetherRoleAnimatedGlassButtonStyle.swift` |
-| Segments and switcher | Together caption modes and skeleton translation controls |
-| Presentation feedback | `skeleton/Skeleton/Design/SheetPresentationFeedback.swift` |
-| Credits | `skeleton/Skeleton/Views/Controls/SkeletonCreditsSheet.swift` |
-| Nothing and Clear | `skeleton/Skeleton/Design/HomeSheetDismissalFeedback.swift`, `HomeDismissalCue.swift` |
+- `Together/Features/Video/Captions/Controls/ControlsKaizoshaLogo.swift` owns direct drag and release behavior.
+- `Together/Shared/UI/KaizoshaLogoArtwork.swift` owns the three pillars and 改造社 geometry.
+- `KaizoshaGlassMark.swift` and `KaizoshaLogo.metal` own the resting and drag-driven finish.
+- `KaizoshaLogoInteraction.swift` and `KaizoshaLogoInteractionPolicy.swift` own elastic response and release velocity.
+- `KaizoshaLogoLighting.swift` owns bounded gravity samples, orientation mapping, and lifecycle.
+- `KaizoshaLogoHaptics.swift` owns accumulated finger travel and view-attached native generators.
 
-The logo resolves shaders with `ShaderLibrary.bundle(.module)`. It does not assume the host app's default Metal library. Start templates do not import app coordinators or the original sensor-housing handoff observer. The reusable pull gesture owns its scroll view and emits a host callback.
+The extraction adds typed configuration and package resource lookup through `ShaderLibrary.bundle(.module)`. It starts motion with view appearance instead of depending on Together's scroll-visibility callback. Launch-sheet travel and singularity behavior are outside this component. Credits navigation is supplied by the consuming app rather than importing Together feature state.
 
-## Design decision
+Motion and haptic owners retain Together's explicit synchronous destructors. The visible component owns explicit stop and invalidation.
 
-Two candidates were considered. A closed enum of destinations was compact, but optional kit integration would require changing it for every host. A descriptor registry lets the example app add integrations without teaching the core catalog about playback or globe engines. Independent review selected the registry.
+## Shipping identity
 
-The final design keeps the enum candidate's domain folders and typed configurations. It uses the registry candidate's independent examples and one list of navigation metadata. It rejects a shared configuration object with unrelated optional fields and a global mutable registry.
-
-## Element screens
-
-Each destination presents one element and a navigation-bar customization button. The shared `ExperimentPage` owns navigation and sheet presentation. It adds no card, heading, instructions, or scrolling around the element. An element that needs scrolling owns that scrolling itself. Button roles have separate entries. Usage code stays inside customization.
-
-## Verification tools
-
-Package tests cover the slider, caption interval boundaries, and pull state transitions. XCUITest drives the runnable catalog and saves screenshots. REA inspects the compiled app as additional binary evidence. Native metadata inspection does not prove UI behavior, and simulator checks cannot establish how vibration feels.
+The display name and source module are KaizoshaUIKit. The shipping bundle identifier remains `org.kaizosha.CustomKit` so existing TestFlight installations receive the renamed app as an update.
