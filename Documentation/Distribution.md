@@ -2,6 +2,12 @@
 
 The shipping app is **CustomKit**, bundle ID `org.kaizosha.CustomKit`, version `1.0`, build `1`. It uses Kaizōsha's company team `564DV375U4`.
 
+## Current internal beta
+
+Version `1.0`, build `1` uploaded and finished processing on October 26, 2026. App Store Connect reports **Ready to Test** in the private **Kon's Testing** group. Automatic distribution is off. The owner's existing Apple account is the sole invited tester.
+
+The [CustomKit TestFlight record](https://appstoreconnect.apple.com/apps/6827106597/testflight) has app ID `6827106597`. Invitation acceptance and installation in the TestFlight app remain separate from upload and processing. Physical installation was not verified because the intended iPhone was unavailable.
+
 ## Create the archive
 
 Keep `CustomKit`, `KaizoshaPlayerKit`, `KaizoshaCaptionKit`, and `Sekai` beside one another. Run these commands from the CustomKit checkout:
