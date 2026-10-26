@@ -107,6 +107,9 @@ public struct MasonryGrid<Content: View>: View {
 }
 
 struct MasonryMetrics {
+    private static let maximumDimension: CGFloat = 1_000_000
+    private static let maximumColumns = 4096
+
     let width: CGFloat
     let horizontalInset: CGFloat
     let columnSpacing: CGFloat
@@ -121,14 +124,16 @@ struct MasonryMetrics {
         columnSpacing: CGFloat,
         rowSpacing: CGFloat
     ) {
-        let minimum = minimumColumnWidth.isFinite ? max(1, minimumColumnWidth) : 148
+        let minimum = max(1, Self.nonnegative(minimumColumnWidth, fallback: 148))
         let inset = Self.nonnegative(horizontalInset, fallback: 20)
         let spacing = Self.nonnegative(columnSpacing, fallback: 16)
-        let width = proposedWidth.flatMap { $0.isFinite ? max(0, $0) : nil }
-            ?? minimum + inset * 2
+        let fallbackWidth = min(Self.maximumDimension, minimum + inset * 2)
+        let width = proposedWidth.map { Self.nonnegative($0, fallback: fallbackWidth) }
+            ?? fallbackWidth
         let resolvedInset = min(inset, width / 2)
         let available = width - resolvedInset * 2
-        let columns = max(1, Int((available + spacing) / (minimum + spacing)))
+        let columnCount = (available + spacing) / (minimum + spacing)
+        let columns = Int(min(CGFloat(Self.maximumColumns), max(1, columnCount)))
 
         self.width = width
         self.horizontalInset = resolvedInset
@@ -142,8 +147,12 @@ struct MasonryMetrics {
         isAccessibilitySize ? 260 : 148
     }
 
+    static func boundedHeight(_ height: CGFloat) -> CGFloat {
+        nonnegative(height, fallback: 0)
+    }
+
     private static func nonnegative(_ value: CGFloat, fallback: CGFloat) -> CGFloat {
-        value.isFinite ? max(0, value) : fallback
+        value.isFinite ? min(maximumDimension, max(0, value)) : fallback
     }
 }
 
@@ -159,7 +168,7 @@ struct MasonryGeometry {
         for height in heights {
             let column = bottoms.indices.min { bottoms[$0] < bottoms[$1] } ?? 0
             let physicalColumn = isRightToLeft ? metrics.columns - column - 1 : column
-            let height = height.isFinite ? max(0, height) : 0
+            let height = MasonryMetrics.boundedHeight(height)
             let frame = CGRect(
                 x: metrics.horizontalInset
                     + CGFloat(physicalColumn) * (metrics.columnWidth + metrics.columnSpacing),

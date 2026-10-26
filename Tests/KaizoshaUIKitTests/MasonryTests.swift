@@ -61,6 +61,41 @@ struct MasonryTests {
         #expect(MasonryGeometry(metrics: unconstrained, heights: [], isRightToLeft: false).size.height == 0)
     }
 
+    @Test("Extreme layout values remain finite and keep allocation bounded")
+    func extremeFiniteValues() {
+        let extreme = CGFloat.greatestFiniteMagnitude
+        let cases: [(CGFloat?, CGFloat, CGFloat, CGFloat, CGFloat)] = [
+            (nil, 148, extreme, 16, 16),
+            (extreme, 1, 0, 0, 0),
+            (extreme, extreme, extreme, extreme, extreme),
+            (.infinity, .nan, .infinity, .nan, -.infinity)
+        ]
+        for (width, minimum, inset, columnSpacing, rowSpacing) in cases {
+            let metrics = MasonryMetrics(
+                proposedWidth: width,
+                minimumColumnWidth: minimum,
+                horizontalInset: inset,
+                columnSpacing: columnSpacing,
+                rowSpacing: rowSpacing
+            )
+            #expect(metrics.width.isFinite)
+            #expect(metrics.columnWidth.isFinite)
+            #expect((1...4096).contains(metrics.columns))
+            let geometry = MasonryGeometry(
+                metrics: metrics,
+                heights: [extreme, extreme, .infinity, .nan, 100],
+                isRightToLeft: false
+            )
+            #expect(geometry.size.width.isFinite)
+            #expect(geometry.size.height.isFinite)
+            #expect(geometry.frames.count == 5)
+            #expect(geometry.frames.allSatisfy {
+                $0.origin.x.isFinite && $0.origin.y.isFinite
+                    && $0.width.isFinite && $0.height.isFinite
+            })
+        }
+    }
+
     private func metrics(width: CGFloat?, isAccessibilitySize: Bool = false) -> MasonryMetrics {
         MasonryMetrics(
             proposedWidth: width,
