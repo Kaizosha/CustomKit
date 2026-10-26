@@ -14,7 +14,7 @@ CustomKit requires Swift 6.4, Xcode 27, and iOS 27. Colors use system appearance
 
 ## Controls and lists
 
-`customKitButton(_:tint:)` applies native glass. Roles are primary, neutral, destructive, reset, success, and working. Each role has a semantic tint and a symbol effect. Use `KitButtonStyle(role:tint:hapticsEnabled:)` directly to disable haptics. The host controls loading state and whether an action is enabled.
+`customKitButton(_:tint:surface:)` applies native glass. Roles are primary, neutral, destructive, reset, success, and working. Each role has a semantic tint and a symbol effect. `KitButtonSurface` selects regular or prominent glass independently of the role. The default is prominent. Use `KitButtonStyle(role:tint:hapticsEnabled:surface:)` directly to disable haptics. The host controls loading state and whether an action is enabled.
 
 `LiquidListRow(isSelected:action:content:)` is an actionable glass capsule with a selected wash. The caller supplies its label and accessory. Group neighboring rows in `GlassEffectContainer`.
 
@@ -44,6 +44,6 @@ The default threshold is 140 points. An empty collection shows a Nothing cue and
 
 ## Embed the catalog
 
-Import `CustomKitCatalog` and show `CatalogView()`. It includes 13 core examples. Pass `additionalEntries:` to append `CatalogEntry` values. Each entry owns its ID, title, source, category, summary, and destination. IDs must be unique.
+Import `CustomKitCatalog` and show `CatalogView()`. It includes the core element examples. Pass `additionalEntries:` to append `CatalogEntry` values. Each entry owns its ID, title, source, category, summary, and destination. IDs must be unique.
 
-`ExperimentPage(title:subtitle:source:api:preview:controls:)` supplies the preview layout, customization sheet, and usage sheet. Each experiment owns local state and reset controls. The example app adds three real kit entries through this boundary.
+`ExperimentPage(title:api:preview:controls:)` presents the element and a navigation-bar customization button. Each example owns its layout and local state. Reset controls and usage code live inside the customization sheet. The example app adds the kit entries through this boundary.

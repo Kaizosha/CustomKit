@@ -71,6 +71,18 @@ final class CatalogUITests: XCTestCase {
         XCTAssertTrue(original.isSelected)
     }
 
+    func testSliderAndStartupCanvases() {
+        open("slider")
+        XCTAssertTrue(app.otherElements["Playback speed"].waitForExistence(timeout: 4))
+        attach("slider-dark-navigation")
+        for (route, action) in [("pinch-start", "Enable in Safari"), ("skeleton-start", "Try Skeleton")] {
+            app.terminate(); app.launch()
+            open(route)
+            XCTAssertTrue(app.buttons[action].waitForExistence(timeout: 6))
+            attach("\(route)-full")
+        }
+    }
+
     func testStartRemainsStartAndCreditsSheet() {
         open("together-start")
         let play = app.buttons["Play"]
@@ -96,6 +108,16 @@ final class CatalogUITests: XCTestCase {
         app.buttons["Pause"].tap()
         XCTAssertFalse(app.buttons["player.choose"].exists)
         attach("player-playing")
+        app.buttons["experiment.customize"].tap()
+        let chooseMovie = app.buttons["player.choose"]
+        reveal(chooseMovie)
+        chooseMovie.tap()
+        let cancel = app.buttons["Cancel"]
+        XCTAssertTrue(cancel.waitForExistence(timeout: 8))
+        attach("player-files")
+        cancel.tap()
+        XCTAssertTrue(app.buttons["customize.done"].exists)
+        app.buttons["customize.done"].tap()
         app.terminate(); app.launch()
         open("captionkit")
         let caption = app.buttons["0:08, A little closer, in every language."]
@@ -109,7 +131,7 @@ final class CatalogUITests: XCTestCase {
         open("pull-clear")
         let conversation = app.descendants(matching: .any)["pull.conversation"].firstMatch
         XCTAssertTrue(conversation.waitForExistence(timeout: 4))
-        let start = conversation.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.12))
+        let start = conversation.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
         let end = conversation.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75))
         start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
         XCTAssertTrue(app.staticTexts["pull.empty"].waitForExistence(timeout: 5))

@@ -2,6 +2,24 @@
 
 Verified on October 26, 2026 with Xcode 27, Swift 6.4, and iOS 27 simulators.
 
+## Element cleanup, build 2
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| All 21 element destinations, customization sheets, and usage pages | Passed | `/tmp/customkit-elements-ui.log` |
+| Individual button roles, live label edits, switcher, segments, startup action, credits, and native detents | Passed | `/tmp/customkit-elements-ui.log` |
+| Pull to clear, empty state, restoration, local playback, caption seeking, and Files presentation | Two focused tests passed | `/tmp/customkit-elements-focused.log` |
+| Dark slider navigation and final TL;Pinch and Skeleton startup views | Passed | `/tmp/customkit-elements-final-r2.log` |
+| Independent source and screenshot review | Passed after correcting slider title contrast | `/tmp/customkit-elements-screens`, `/tmp/customkit-elements-final-screens` |
+| Signed device archive | CustomKit 1.0 (2), company team `564DV375U4`; signature verified | `/tmp/CustomKit-1.0-2-final.xcarchive`, `/tmp/customkit-elements-archive-final.log` |
+| REA inspection of the final device binary | arm64, iOS 27; Mach-O, dependencies, and dispatch inspected | `/tmp/customkit-elements-rea-final` |
+
+Eight distinct UI test methods passed across the full and focused runs. The initial pull test began at screen y105 inside the navigation bar, which ended at y116. Moving its start into the conversation made the same clear-and-restore assertions pass. The production pull gesture did not change.
+
+The slider test uses the observed accessibility type `Other` for its UIKit control. Fresh screenshots show the original rail and knob with a readable navigation title. REA remains supplementary binary evidence and does not establish visual behavior or physical haptic feel.
+
+## Initial release checks
+
 | Check | Result | Evidence |
 | --- | --- | --- |
 | Package behavior | 31 tests passed | `/tmp/customkit-package-final.log` |
@@ -19,7 +37,7 @@ The first UI run found a parent accessibility identifier that overrode child con
 
 The live customization test initially tapped the center of a switch's label and left its value at `1`. Targeting the switch thumb changed it to `0`, hid the native language text, and passed with the original preview implementation. The same check passed on iPad. Its regression test also expands a real native sheet and checks its changed position.
 
-## REA inspection
+## Initial release REA inspection
 
 REA 6.8.0 inspected the Release simulator app using the native macOS provider. Node 26.12.1 came from the official Node distribution, with its archive checksum verified against the official checksum list. Tooling remained outside the repository.
 

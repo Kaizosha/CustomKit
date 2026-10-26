@@ -208,5 +208,6 @@ private struct SliderExample: View {
             }
             Section { Button("Reset", role: .destructive) { speed = 1; rail = 44; tint = .white; haptics = true } }
         }
+        .preferredColorScheme(.dark)
     }
 }

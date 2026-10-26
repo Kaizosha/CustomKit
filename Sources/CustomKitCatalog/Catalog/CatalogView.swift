@@ -87,10 +87,7 @@ public struct CatalogView: View {
         VStack(alignment: .leading, spacing: 9) {
             Text("Kaizōsha")
                 .font(.system(.title2, design: .serif))
-            Text("Small details. Shared across our apps.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Text("Interactive templates, ready to make your own.")
+            Text("Reusable elements from our apps.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }

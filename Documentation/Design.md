@@ -29,6 +29,10 @@ Two candidates were considered. A closed enum of destinations was compact, but o
 
 The final design keeps the enum candidate's domain folders and typed configurations. It uses the registry candidate's independent examples and one list of navigation metadata. It rejects a shared configuration object with unrelated optional fields and a global mutable registry.
 
+## Element screens
+
+Each destination presents one element and a navigation-bar customization button. The shared `ExperimentPage` owns navigation and sheet presentation. It adds no card, heading, instructions, or scrolling around the element. An element that needs scrolling owns that scrolling itself. Button roles have separate entries. Usage code stays inside customization.
+
 ## Verification tools
 
 Package tests cover the slider, caption interval boundaries, and pull state transitions. XCUITest drives the runnable catalog and saves screenshots. REA inspects the compiled app as additional binary evidence. Native metadata inspection does not prove UI behavior, and simulator checks cannot establish how vibration feels.

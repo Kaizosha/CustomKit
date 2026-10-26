@@ -2,7 +2,7 @@
 
 Reusable SwiftUI details from Kaizōsha's apps, with an interactive catalog to try them.
 
-The catalog has 16 working examples. Each opens a live preview, its own customization sheet, reset controls, and copyable usage code.
+Each catalog entry opens directly to one element. The navigation bar opens its customization sheet. Usage code and reset controls stay inside that sheet.
 
 ## Run the catalog
 
@@ -63,7 +63,7 @@ Your app owns actions, data, persistence, and engine lifecycle. CustomKit owns t
 | --- | --- |
 | `Branding` | `KaizoshaLogo`, `LogoConfiguration` |
 | `Launch` | `LaunchAnimation`, `LaunchConfiguration`, `StartTemplate`, `StartExperience`, `StartConfiguration` |
-| `Controls` | `KitButtonStyle`, `KitButtonRole`, `KitSwitcher`, `KitSegmentedControl`, `KitSegment`, `Slider`, `SliderStyle`, `SliderDirection` |
+| `Controls` | `KitButtonStyle`, `KitButtonRole`, `KitButtonSurface`, `KitSwitcher`, `KitSegmentedControl`, `KitSegment`, `Slider`, `SliderStyle`, `SliderDirection` |
 | `Lists` | `LiquidListRow` |
 | `Sheets` | `hapticSheet`, `MadeByKaizosha` |
 | `Playback` | `PlaybackControls` |
@@ -90,7 +90,7 @@ xcodebuild -project Examples/CustomKitCatalog/CustomKitCatalog.xcodeproj \
   -parallel-testing-enabled NO test
 ```
 
-The UI suite opens all 16 entries, checks every customization sheet and usage sheet, and exercises queue actions, welcome navigation, local playback, caption seeking, and pull-to-clear. It saves screenshots in the test result bundle.
+The UI suite opens every element, checks its customization sheet and usage code, and exercises live changes, native sheet detents, local playback, caption seeking, and pull-to-clear. It saves screenshots in the test result bundle.
 
 After adding example app files, run `python3 Scripts/generate-example-project.py`. The generated project is checked in, so XcodeGen is not required. `Scripts/generate-sample.py` reproduces the motion study using Pillow and FFmpeg.
 

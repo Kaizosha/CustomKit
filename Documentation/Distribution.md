@@ -1,6 +1,10 @@
 # Deliver CustomKit to TestFlight
 
-The shipping app is **CustomKit**, bundle ID `org.kaizosha.CustomKit`, version `1.0`, build `1`. It uses Kaizōsha's company team `564DV375U4`.
+The shipping app is **CustomKit**, bundle ID `org.kaizosha.CustomKit`, version `1.0`, build `2`. It uses Kaizōsha's company team `564DV375U4`.
+
+## Revised build 2
+
+The element-only catalog is archived and signed as version `1.0`, build `2`. The verified archive is `/tmp/CustomKit-1.0-2-final.xcarchive`. Xcode could not upload it because the existing App Store Connect account could not authenticate. Safari also requests Apple sign-in. Build 2 has not been uploaded or assigned to a group.
 
 ## Current internal beta
 
@@ -21,7 +25,7 @@ xcodebuild \
   -configuration Release \
   -destination 'generic/platform=iOS' \
   -derivedDataPath /tmp/customkit-device-build \
-  -archivePath /tmp/CustomKit-1.0-1.xcarchive \
+  -archivePath /tmp/CustomKit-1.0-2-final.xcarchive \
   -allowProvisioningUpdates archive
 ```
 
@@ -46,8 +50,8 @@ For an export before upload, use the checked-in options:
 ```sh
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
 xcodebuild -exportArchive \
-  -archivePath /tmp/CustomKit-1.0-1.xcarchive \
-  -exportPath /tmp/CustomKit-1.0-1-export \
+  -archivePath /tmp/CustomKit-1.0-2-final.xcarchive \
+  -exportPath /tmp/CustomKit-1.0-2-export \
   -exportOptionsPlist Examples/CustomKitCatalog/ExportOptions.plist \
   -allowProvisioningUpdates
 ```
