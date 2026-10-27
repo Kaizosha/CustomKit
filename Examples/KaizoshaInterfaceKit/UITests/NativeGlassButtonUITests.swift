@@ -92,7 +92,7 @@ final class NativeGlassButtonUITests: XCTestCase {
         assertActivations(1)
     }
 
-    func testCustomTitleUpdatesTheNativeButton() {
+    func testCustomTitleUpdatesTheNativeButtonAndCopyableCode() {
         app.buttons["component.customize"].tap()
         let title = app.textFields["glass.title"]
         reveal(title)
@@ -102,6 +102,21 @@ final class NativeGlassButtonUITests: XCTestCase {
         XCTAssertEqual(element.label, "Save changes")
         element.tap()
         assertActivations(1)
+        app.buttons["component.customize"].tap()
+        let usage = app.buttons["component.code"]
+        reveal(usage)
+        usage.tap()
+        let code = app.staticTexts.containing(NSPredicate(
+            format: "label CONTAINS %@", "// Current customization."
+        )).firstMatch
+        XCTAssertTrue(code.waitForExistence(timeout: 4))
+        XCTAssertTrue(code.label.contains("Button(\"Save changes\", systemImage: \"arrow.right\", role: nil)"))
+        XCTAssertTrue(code.label.contains("surface: .prominent"))
+        XCTAssertTrue(code.label.contains("borderShape: .capsule"))
+        XCTAssertTrue(code.label.contains(".controlSize(.regular)"))
+        XCTAssertTrue(code.label.contains("// Ready examples"))
+        app.buttons["Copy"].tap()
+        XCTAssertTrue(app.buttons["Copied"].exists)
     }
 
     private var element: XCUIElement { app.buttons["glass.element"] }

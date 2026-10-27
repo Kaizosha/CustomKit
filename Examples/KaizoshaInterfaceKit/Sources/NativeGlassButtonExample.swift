@@ -5,10 +5,11 @@ struct NativeGlassButtonExample: View {
     @State private var settings = GlassButtonSettings()
     @State private var activations = 0
     @State private var rotationTrigger = 0
+    @Environment(\.self) private var environment
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        ComponentPage(title: "Native Glass Button", code: Self.code, reset: {
+        ComponentPage(title: "Native Glass Button", code: Self.code(for: settings, in: environment), reset: {
             settings = .init()
             activations = 0
             rotationTrigger = 0
@@ -121,16 +122,16 @@ struct NativeGlassButtonExample: View {
     }
 }
 
-private enum GlassButtonPreset: String, CaseIterable {
+enum GlassButtonPreset: String, CaseIterable {
     case primary = "Primary", confirm = "Confirm", help = "Help"
     case reset = "Reset", destructive = "Destructive", menu = "Menu"
 }
 
-private enum GlassButtonLabel: String, CaseIterable {
+enum GlassButtonLabel: String, CaseIterable {
     case titleAndIcon = "Title and icon", iconOnly = "Icon only", titleOnly = "Title only"
 }
 
-private enum GlassButtonRole: String, CaseIterable {
+enum GlassButtonRole: String, CaseIterable {
     case none = "None", confirm = "Confirm", close = "Close"
     case cancel = "Cancel", destructive = "Destructive"
 
@@ -145,7 +146,7 @@ private enum GlassButtonRole: String, CaseIterable {
     }
 }
 
-private enum GlassButtonShape: String, CaseIterable {
+enum GlassButtonShape: String, CaseIterable {
     case capsule = "Capsule", circle = "Circle", roundedRectangle = "Rounded rectangle"
 
     var value: ButtonBorderShape {
@@ -157,7 +158,7 @@ private enum GlassButtonShape: String, CaseIterable {
     }
 }
 
-private enum GlassButtonSize: String, CaseIterable {
+enum GlassButtonSize: String, CaseIterable {
     case mini = "Mini", small = "Small", regular = "Regular"
     case large = "Large", extraLarge = "Extra large"
 
@@ -172,7 +173,7 @@ private enum GlassButtonSize: String, CaseIterable {
     }
 }
 
-private struct GlassButtonSettings {
+struct GlassButtonSettings {
     var preset: GlassButtonPreset
     var surface: NativeGlassButtonConfiguration.Surface = .prominent
     var tint: Color = .accentColor
@@ -195,7 +196,7 @@ private struct GlassButtonSettings {
             title = "Help"; symbol = "questionmark"; tint = .yellow
             shape = .circle; label = .iconOnly
         case .reset:
-            title = "Reset"; symbol = "arrow.counterclockwise"
+            title = "Reset"; symbol = "arrow.counterclockwise"; tint = .orange
             shape = .circle; label = .iconOnly
         case .destructive:
             title = "Delete"; symbol = "trash"; tint = .red; role = .destructive
