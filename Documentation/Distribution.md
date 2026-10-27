@@ -32,4 +32,6 @@ The [TestFlight record](https://appstoreconnect.apple.com/apps/6827106597/testfl
 
 ## Current build 3 state
 
-The signed archive and native inspection passed. The GitHub repository and App Store Connect app name are KaizoshaUIKit. Build 3 has not uploaded yet. The command-line upload reported `Failed to Use Accounts` for the company team. The Mac is locked, preventing Organizer upload with the existing signed-in account. Resume from the verified archive after the Mac is unlocked; preserve build 3 and the existing internal group.
+Xcode uploaded version 1.0 build 3 successfully on October 27, 2026. App Store Connect shows the upload as Processing. The company account, existing app identity, and internal-only distribution are preserved. Group assignment and Testing availability remain pending processing.
+
+The final archive is `/tmp/KaizoshaUIKit-1.0-3-final.xcarchive`; its verified executable SHA256 is `0ef5559a227101f98373fa41cc57f32dcdd0c2e94bc09da2cfef9e6a60c0de6a`. The upload log is `/tmp/kaizosha-uikit-upload-ready.log` and ends with `Upload succeeded` and `EXPORT SUCCEEDED`.
