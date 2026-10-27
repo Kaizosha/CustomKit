@@ -2,13 +2,17 @@ import SwiftUI
 
 /// Configures native glass while the consuming control owns its behavior.
 public struct NativeGlassButtonConfiguration {
-    public enum Surface: Equatable, Sendable {
+    /// Chooses the system's regular or prominent interactive glass surface.
+    public enum Surface: Hashable, Sendable {
         case regular
         case prominent
     }
 
+    /// The native surface to apply; prominent is the default.
     public var surface: Surface
+    /// The enabled surface tint. Unavailable prominent buttons use the app accent.
     public var tint: Color
+    /// The native button border shape, without imposing label size or padding.
     public var borderShape: ButtonBorderShape
 
     public init(

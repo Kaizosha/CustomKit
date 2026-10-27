@@ -68,6 +68,24 @@ final class NativeGlassButtonUITests: XCTestCase {
         XCTAssertFalse(command.exists)
     }
 
+    func testProminentNativeMenuRetainsItsCommandAndDisabledState() {
+        app.buttons["component.customize"].tap()
+        selectPreset("Menu")
+        app.buttons["glass.surface"].tap()
+        app.buttons["Prominent"].firstMatch.tap()
+        app.buttons["customize.done"].tap()
+        element.tap()
+        let command = app.buttons["glass.menu-command"]
+        XCTAssertTrue(command.waitForExistence(timeout: 4))
+        command.tap()
+        assertActivations(1)
+        app.buttons["component.customize"].tap()
+        toggle("glass.enabled")
+        app.buttons["customize.done"].tap()
+        assertDisabledCannotActivate(expected: 1)
+        XCTAssertFalse(command.exists)
+    }
+
     func testPresetsAndResetRestoreTheWorkingDefault() {
         for preset in ["Confirm", "Help", "Reset", "Destructive"] {
             app.buttons["component.customize"].tap()

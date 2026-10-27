@@ -50,3 +50,41 @@ Tapping unavailable High leaves the current selection unchanged and invokes the 
 `MasonryGrid` measures children at the available column width and places each in the shortest column. Defaults are 20-point horizontal insets and 16-point row and column gaps. Automatic minimum column width is 148 points, or 260 at accessibility text sizes. Reading direction mirrors physical columns while preserving data order. Explicit `minimumColumnWidth` overrides automatic sizing.
 
 `MasonryLayout` exposes the same geometry as a SwiftUI `Layout` for direct composition. It accepts an explicit `layoutDirection`; the `MasonryGrid` wrapper reads it from the environment. Each child owns its aspect ratio and padding. A six-point child inset reproduces Together's media-card proportions without importing its playback or thumbnail state.
+
+## Native Glass Button
+
+Apply `.kaizoshaGlassButtonStyle(_:)` to a native `Button`, or to a native `Menu`
+using `.menuStyle(.button)`. `NativeGlassButtonConfiguration` contains:
+
+| Value | Default | Behavior |
+| --- | --- | --- |
+| `surface` | `.prominent` | Native prominent or regular glass. |
+| `tint` | `.accentColor` | The enabled surface tint. |
+| `borderShape` | `.capsule` | Native border shape; label size and control size stay with the caller. |
+
+Prominent labels use the adaptive system-background foreground inside the native
+label: light in Light appearance and dark in Dark appearance, matching Done.
+Unavailable prominent controls use the native confirmation rendering role and
+app accent, including when an ancestor disables them. They remain truly disabled.
+Re-enabling restores the supplied role and tint. This intentionally normalizes
+the role only while unavailable, including close and destructive roles. Regular
+glass preserves its native foreground and supplied tint without this adaptation.
+
+Roles, actions, labels, accessibility, `.controlSize`, `.disabled`, and symbol
+effects remain native SwiftUI responsibilities. The component adds no custom
+material, opacity simulation, tap handling, or forced enabled environment.
+
+```swift
+Menu("Actions", systemImage: "ellipsis") {
+    Button("Select All", action: selectAll)
+    Button("Remove", role: .destructive, action: remove)
+}
+.menuStyle(.button)
+.kaizoshaGlassButtonStyle(.init(surface: .regular))
+```
+
+The gallery provides Primary, Confirm, Help, Reset, Destructive, and Menu presets.
+Its customization sheet changes the native label, role, tint, surface, shape,
+control size, and local or inherited availability. The visible activation count
+proves repeated actions and disabling; Reset restores defaults. The usage screen
+contains the current configuration followed by ready-to-use examples.

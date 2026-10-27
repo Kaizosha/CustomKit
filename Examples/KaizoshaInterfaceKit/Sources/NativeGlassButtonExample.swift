@@ -54,6 +54,7 @@ struct NativeGlassButtonExample: View {
                     Text("Regular").tag(NativeGlassButtonConfiguration.Surface.regular)
                     Text("Prominent").tag(NativeGlassButtonConfiguration.Surface.prominent)
                 }
+                .accessibilityIdentifier("glass.surface")
                 ColorPicker("Tint", selection: $settings.tint)
                 Picker("Shape", selection: $settings.shape) {
                     ForEach(GlassButtonShape.allCases, id: \.self) { Text($0.rawValue).tag($0) }

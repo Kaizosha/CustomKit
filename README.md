@@ -23,6 +23,7 @@ The package exports these components in catalog order:
 | Language Switcher | `LanguageSwitcher` | Width and titles |
 | Low/High Switcher | `TranslationStrategySwitcher` | `TranslationStrategySwitcherConfiguration` |
 | Masonry Layout | `MasonryGrid` or `MasonryLayout` | Column width, insets, and spacing |
+| Native Glass Button | `.kaizoshaGlassButtonStyle()` | `NativeGlassButtonConfiguration` |
 
 ```swift
 import KaizoshaInterfaceKit
@@ -42,6 +43,22 @@ struct LanguageControls: View {
 ```
 
 Your app owns bindings, actions, translation availability, and presentation. Components do not depend on Together sessions, purchases, media engines, or sibling repositories. Metal resources are bundled with the package.
+
+Keep native button labels, roles, accessibility, sizing, and disabled state:
+
+```swift
+Button("Help", systemImage: "questionmark") {
+    showHelp = true
+}
+.labelStyle(.iconOnly)
+.kaizoshaGlassButtonStyle(.init(tint: .yellow, borderShape: .circle))
+.disabled(!canShowHelp)
+```
+
+The Native Glass Button example includes six ready presets and a live customizer.
+Its usage screen copies the current configuration, including edited labels and
+availability. Prominent symbols follow the system appearance, and unavailable
+controls retain native disabled interaction and one shared appearance.
 
 For device lighting on the logo, add `NSMotionUsageDescription` to your app's Info.plist. See [component reference](Documentation/Components.md) for configuration and default behavior.
 

@@ -2,7 +2,13 @@
 
 The package exports one library, `KaizoshaInterfaceKit`. Components live in `Sources/KaizoshaInterfaceKit`. The private example app lives in `Examples/KaizoshaInterfaceKit`. It presents one ordered list and one element per destination.
 
-The catalog contains the seven requested components in order. The former catalog and media integrations were removed. Git history preserves earlier work. Public components are grouped into Branding, Sheets, Controls, and Layouts. The gallery has no exported product.
+The catalog contains eight components in order. The former catalog and media integrations were removed. Git history preserves earlier work. Public components are grouped into Branding, Sheets, Controls, and Layouts. The gallery has no exported product.
+
+The native glass renderer is package-owned. Together delegates its toolbar,
+animated action, subscription feature, and transcript menu surfaces to the same
+public configuration/modifier. Its semantic colors, symbol animation roles,
+workflow actions, and availability stay in Together. A dedicated Button wrapper
+is deliberately absent so native Button and Menu constructors remain available.
 
 ## Together source
 

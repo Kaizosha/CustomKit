@@ -1,5 +1,12 @@
 # Changelog
 
+## Package 0.3.0
+
+- Renamed the public product and module to KaizoshaInterfaceKit.
+- Added the native glass button configuration/modifier with adaptive symbol foreground and native unavailable presentation.
+- Added six button/menu presets, live customization, and copyable current usage in the example app.
+- Supports iOS and iPadOS 26 with the existing Xcode 27 / Swift 6.4 toolchain.
+
 ## 1.0 build 4 (unreleased)
 
 - Renamed the package, product, import module, and example app to KaizoshaInterfaceKit.
