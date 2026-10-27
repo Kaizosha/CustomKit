@@ -13,7 +13,7 @@ xcodebuild \
   -configuration Release \
   -destination 'generic/platform=iOS' \
   -derivedDataPath /tmp/kaizosha-uikit-device-build \
-  -archivePath /tmp/KaizoshaUIKit-1.0-3.xcarchive \
+  -archivePath /tmp/KaizoshaUIKit-1.0-3-final.xcarchive \
   -allowProvisioningUpdates archive
 ```
 
@@ -29,3 +29,7 @@ Read the archived app's metadata, verify its signature, and confirm that the bun
 6. Verify that the group reports the build as Testing.
 
 The [TestFlight record](https://appstoreconnect.apple.com/apps/6827106597/testflight) uses the existing app ID. Do not claim upload, group availability, or physical installation from a local archive alone.
+
+## Current build 3 state
+
+The signed archive and native inspection passed. The GitHub repository and App Store Connect app name are KaizoshaUIKit. Build 3 has not uploaded yet. The command-line upload reported `Failed to Use Accounts` for the company team. The Mac is locked, preventing Organizer upload with the existing signed-in account. Resume from the verified archive after the Mac is unlocked; preserve build 3 and the existing internal group.
