@@ -114,6 +114,7 @@ public struct TranslationStrategyPill: View {
                 if compact {
                     Image(systemName: "info.circle")
                         .font(.body)
+                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         .frame(width: 44, height: 44)
                 } else {
                     Text("Translation Strategy")
