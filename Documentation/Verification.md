@@ -1,8 +1,24 @@
 # Verify KaizoshaInterfaceKit
 
-Run `Scripts/verify.sh SIMULATOR_ID` with Xcode 27 selected. The package suite covers the public import, logo motion and drag policies, haptic travel, native control actions and availability, justified credits, and masonry geometry. The gallery suite checks the ordered seven-item list, all customization sheets and usage code, customized credits, native selection, unavailable High, repeated Unlock activation, pill guidance and compact state, masonry proportions, and logo drag return.
+Run `Scripts/verify.sh SIMULATOR_ID` with Xcode 27 selected. The package suite covers the public import, logo motion and drag policies, haptic travel, native control actions and availability, justified credits, and masonry geometry. The gallery suite checks the ordered eight-item list, all customization sheets and usage code, customized credits, native selection, unavailable High, repeated Unlock activation, pill guidance and compact state, masonry proportions, and logo drag return. Native Glass Button checks cover repeated activation, local and inherited disabling, regular and prominent menus, presets, reset, and copyable current customization.
 
 UI tests retain screenshots in their result bundle. Use `xcrun xcresulttool export attachments --path RESULT.xcresult --output-path DIRECTORY` to export them.
+
+## Native glass extraction
+
+The renamed iOS 26 package passes 30 tests. The complete iPhone simulator gallery
+passes 13 checks, including the eight-item catalog and generated customization
+code. The five button checks also pass on an iPad simulator in Dark appearance
+at accessibility XXXL. Two physical iPhone checks prove repeated activation,
+local and inherited disabling, and a working prominent menu.
+
+The first physical menu run was interrupted by a system notification banner;
+that failed bundle is retained. Both unchanged checks pass on repeat. Xcode's
+post-run simulator diagnostic collector reports that its separate `xcrun`
+lookup cannot find `simctl`; the test command still exits zero and reports
+`TEST EXECUTE SUCCEEDED`. This does not establish a clean diagnostic collection.
+Physical iPad validation remains deferred. Current evidence is under
+`/tmp/KaizoshaInterfaceKit42`.
 
 ## Build 3 evidence
 
