@@ -5,7 +5,7 @@ import json
 from PIL import Image, ImageDraw, ImageFont
 
 root = Path(__file__).resolve().parents[1]
-catalog = root / "Examples/KaizoshaUIKit/Resources/Assets.xcassets"
+catalog = root / "Examples/KaizoshaInterfaceKit/Resources/Assets.xcassets"
 icon_set = catalog / "AppIcon.appiconset"
 icon_set.mkdir(parents=True, exist_ok=True)
 

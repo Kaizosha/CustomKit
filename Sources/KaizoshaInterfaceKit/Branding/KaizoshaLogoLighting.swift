@@ -1,6 +1,6 @@
 //
 //  KaizoshaLogoLighting.swift
-//  KaizoshaUIKit
+//  KaizoshaInterfaceKit
 //
 
 import CoreGraphics

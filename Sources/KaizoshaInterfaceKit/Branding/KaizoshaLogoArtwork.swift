@@ -1,6 +1,6 @@
 //
 //  KaizoshaLogoArtwork.swift
-//  KaizoshaUIKit
+//  KaizoshaInterfaceKit
 //
 
 import SwiftUI

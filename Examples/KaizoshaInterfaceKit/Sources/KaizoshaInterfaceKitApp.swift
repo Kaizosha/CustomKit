@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct KaizoshaUIKitApp: App {
+struct KaizoshaInterfaceKitApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
@@ -22,7 +22,7 @@ struct KaizoshaUIKitApp: App {
                         .accessibilityIdentifier("catalog.masonry-layout")
                 }
                 .listStyle(.plain)
-                .navigationTitle("KaizoshaUIKit")
+                .navigationTitle("KaizoshaInterfaceKit")
                 .navigationBarTitleDisplayMode(.inline)
             }
             .tint(.primary)

@@ -11,7 +11,7 @@ final class LogoUITests: XCTestCase {
     }
 
     func testCatalogContainsTheRequestedOrder() {
-        XCTAssertTrue(app.navigationBars["KaizoshaUIKit"].exists)
+        XCTAssertTrue(app.navigationBars["KaizoshaInterfaceKit"].exists)
         let titles = ["Kaizosha Logo", "Made by Kaizosha", "Unlock Together", "Translation Strategy Pill", "Language Switcher", "Low/High Switcher", "Masonry Layout"]
         XCTAssertEqual(app.cells.count, titles.count)
         for (index, title) in titles.enumerated() {
@@ -20,7 +20,7 @@ final class LogoUITests: XCTestCase {
         XCTAssertTrue(app.buttons["catalog.kaizosha-logo"].exists)
         XCTAssertFalse(app.buttons["catalog.playerkit"].exists)
         XCTAssertFalse(app.buttons["catalog.buttons"].exists)
-        attach("kaizosha-uikit-list")
+        attach("kaizosha-interfacekit-list")
         openLogo()
         XCTAssertTrue(app.navigationBars.buttons["component.customize"].exists)
         XCTAssertFalse(app.buttons["component.code"].exists)

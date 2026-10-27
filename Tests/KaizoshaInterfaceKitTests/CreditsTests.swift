@@ -1,7 +1,7 @@
 import SwiftUI
 import Testing
 import UIKit
-@testable import KaizoshaUIKit
+@testable import KaizoshaInterfaceKit
 
 @MainActor
 struct CreditsTests {

@@ -1,4 +1,4 @@
-import KaizoshaUIKit
+import KaizoshaInterfaceKit
 import SwiftUI
 import UIKit
 
@@ -31,7 +31,7 @@ struct UnlockTogetherExample: View {
     }
 
     private let code = """
-    import KaizoshaUIKit
+    import KaizoshaInterfaceKit
 
     UnlockTogetherControl(isUnlocked: false) {
         // Present your unlock flow.
@@ -69,7 +69,7 @@ struct TranslationPillExample: View {
     }
 
     private let code = """
-    import KaizoshaUIKit
+    import KaizoshaInterfaceKit
 
     @State private var strategy = TranslationStrategy.lowLatency
 
@@ -108,7 +108,7 @@ struct LanguageExample: View {
     }
 
     private let code = """
-    import KaizoshaUIKit
+    import KaizoshaInterfaceKit
 
     @State private var role = LanguageRole.source
 
@@ -144,7 +144,7 @@ struct StrategySwitcherExample: View {
     }
 
     private let code = """
-    import KaizoshaUIKit
+    import KaizoshaInterfaceKit
 
     @State private var strategy = TranslationStrategy.lowLatency
 

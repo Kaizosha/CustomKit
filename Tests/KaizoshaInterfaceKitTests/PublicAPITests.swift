@@ -1,4 +1,4 @@
-import KaizoshaUIKit
+import KaizoshaInterfaceKit
 import SwiftUI
 import Testing
 

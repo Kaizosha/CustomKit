@@ -1,6 +1,6 @@
 //
 //  KaizoshaLogoInteraction.swift
-//  KaizoshaUIKit
+//  KaizoshaInterfaceKit
 //
 
 import CoreGraphics

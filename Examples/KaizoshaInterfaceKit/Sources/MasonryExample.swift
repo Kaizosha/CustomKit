@@ -1,4 +1,4 @@
-import KaizoshaUIKit
+import KaizoshaInterfaceKit
 import SwiftUI
 
 struct MasonryExample: View {
@@ -50,7 +50,7 @@ struct MasonryExample: View {
 
     private let ratios: [CGFloat] = [0.72, 1.3, 0.9, 1.6, 0.62, 1.1, 0.8]
     private let code = """
-    import KaizoshaUIKit
+    import KaizoshaInterfaceKit
 
     ScrollView {
         MasonryGrid {

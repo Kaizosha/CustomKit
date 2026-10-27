@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0 build 4 (unreleased)
+
+- Renamed the package, product, import module, and example app to KaizoshaInterfaceKit.
+- Set the package and example app minimum deployment target to iOS 26.
+- Preserved the existing app bundle identity for TestFlight updates.
+
 ## 1.0 build 3
 
 - Renamed the package, product, import module, and example app to KaizoshaUIKit.

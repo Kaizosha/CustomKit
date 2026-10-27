@@ -4,12 +4,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "KaizoshaUIKit",
-    platforms: [.iOS(.v27)],
-    products: [.library(name: "KaizoshaUIKit", targets: ["KaizoshaUIKit"])],
+    name: "KaizoshaInterfaceKit",
+    platforms: [.iOS(.v26)],
+    products: [.library(name: "KaizoshaInterfaceKit", targets: ["KaizoshaInterfaceKit"])],
     targets: [
-        .target(name: "KaizoshaUIKit", resources: [.process("Branding/Resources")]),
-        .testTarget(name: "KaizoshaUIKitTests", dependencies: ["KaizoshaUIKit"])
+        .target(name: "KaizoshaInterfaceKit", resources: [.process("Branding/Resources")]),
+        .testTarget(name: "KaizoshaInterfaceKitTests", dependencies: ["KaizoshaInterfaceKit"])
     ],
     swiftLanguageModes: [.v6]
 )

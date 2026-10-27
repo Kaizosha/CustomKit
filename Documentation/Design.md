@@ -1,6 +1,6 @@
-# KaizoshaUIKit design
+# KaizoshaInterfaceKit design
 
-The package exports one library, `KaizoshaUIKit`. Components live in `Sources/KaizoshaUIKit`. The private example app lives in `Examples/KaizoshaUIKit`. It presents one ordered list and one element per destination.
+The package exports one library, `KaizoshaInterfaceKit`. Components live in `Sources/KaizoshaInterfaceKit`. The private example app lives in `Examples/KaizoshaInterfaceKit`. It presents one ordered list and one element per destination.
 
 The catalog contains the seven requested components in order. The former catalog and media integrations were removed. Git history preserves earlier work. Public components are grouped into Branding, Sheets, Controls, and Layouts. The gallery has no exported product.
 
@@ -21,7 +21,7 @@ Motion and haptic owners retain Together's explicit synchronous destructors. The
 
 ## Shipping identity
 
-The display name and source module are KaizoshaUIKit. The shipping bundle identifier remains `org.kaizosha.CustomKit` so existing TestFlight installations receive the renamed app as an update.
+The display name and source module are KaizoshaInterfaceKit. The shipping bundle identifier remains `org.kaizosha.CustomKit` so existing TestFlight installations receive the renamed app as an update.
 
 ## Controls and layouts
 

@@ -1,10 +1,12 @@
-# Verify KaizoshaUIKit
+# Verify KaizoshaInterfaceKit
 
 Run `Scripts/verify.sh SIMULATOR_ID` with Xcode 27 selected. The package suite covers the public import, logo motion and drag policies, haptic travel, native control actions and availability, justified credits, and masonry geometry. The gallery suite checks the ordered seven-item list, all customization sheets and usage code, customized credits, native selection, unavailable High, repeated Unlock activation, pill guidance and compact state, masonry proportions, and logo drag return.
 
 UI tests retain screenshots in their result bundle. Use `xcrun xcresulttool export attachments --path RESULT.xcresult --output-path DIRECTORY` to export them.
 
 ## Build 3 evidence
+
+These receipts describe the prior KaizoshaUIKit release. Verify the renamed package and build 4 separately.
 
 - Public consumer smoke tests use ordinary `import KaizoshaUIKit` and construct every exported component. Package suite: 28 tests passed in `/tmp/kaizosha-uikit-package-final.xcresult`.
 - Complete iPhone gallery suite: eight tests passed in `/tmp/kaizosha-uikit-gallery-verified.xcresult`. The recorded drag visibly moves the logo, then returns it to its anchor. Recording: `/tmp/kaizosha-uikit-interactions.mp4`.

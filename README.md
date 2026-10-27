@@ -1,13 +1,13 @@
-# KaizoshaUIKit
+# KaizoshaInterfaceKit
 
 Reusable native components from Kaizōsha's apps. The example app has a plain ordered list. Each destination presents its component and one navigation-bar button that opens live customization, reset, and copyable usage code.
 
 ## Add to your app
 
-Add `https://github.com/Kaizosha/KaizoshaUIKit` as a Swift package dependency and select the **KaizoshaUIKit** product. The package, product, and import module all use that name. Requires Xcode 27, Swift 6.4, and iOS 27.
+Add `https://github.com/Kaizosha/KaizoshaInterfaceKit` as a Swift package dependency and select the **KaizoshaInterfaceKit** product. The package, product, and import module all use that name. Requires Xcode 27, Swift 6.4, and iOS 26 or later.
 
 ```swift
-import KaizoshaUIKit
+import KaizoshaInterfaceKit
 
 KaizoshaLogo()
 ```
@@ -25,7 +25,7 @@ The package exports these components in catalog order:
 | Masonry Layout | `MasonryGrid` or `MasonryLayout` | Column width, insets, and spacing |
 
 ```swift
-import KaizoshaUIKit
+import KaizoshaInterfaceKit
 import SwiftUI
 
 struct LanguageControls: View {
@@ -47,13 +47,13 @@ For device lighting on the logo, add `NSMotionUsageDescription` to your app's In
 
 ## Run the example
 
-Open [KaizoshaUIKit.xcodeproj](Examples/KaizoshaUIKit/KaizoshaUIKit.xcodeproj) and choose the **KaizoshaUIKit** scheme.
+Open [KaizoshaInterfaceKit.xcodeproj](Examples/KaizoshaInterfaceKit/KaizoshaInterfaceKit.xcodeproj) and choose the **KaizoshaInterfaceKit** scheme.
 
 Run `python3 Scripts/generate-example-project.py` after changing example files. The generated project is checked in.
 
 ## Verify changes
 
-Run `Scripts/verify.sh SIMULATOR_ID` on an iOS 27 simulator. It runs package and gallery UI tests and retains screenshots in result bundles. See [verification](Documentation/Verification.md) and [TestFlight delivery](Documentation/Distribution.md).
+Run `Scripts/verify.sh SIMULATOR_ID` on an iOS 26 or later simulator. It runs package and gallery UI tests and retains screenshots in result bundles. See [verification](Documentation/Verification.md) and [TestFlight delivery](Documentation/Distribution.md).
 
 ## License
 

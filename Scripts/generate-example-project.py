@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Regenerate the KaizoshaUIKit example project from its sources."""
+"""Regenerate the KaizoshaInterfaceKit example project from its sources."""
 from pathlib import Path
 import hashlib
 
 ROOT = Path(__file__).resolve().parents[1]
-EXAMPLE = ROOT / "Examples/KaizoshaUIKit"
-PROJECT = EXAMPLE / "KaizoshaUIKit.xcodeproj"
+EXAMPLE = ROOT / "Examples/KaizoshaInterfaceKit"
+PROJECT = EXAMPLE / "KaizoshaInterfaceKit.xcodeproj"
 objects = {}
 
 
@@ -69,7 +69,7 @@ package_refs = []
 products = []
 frameworks = []
 packages = {
-    "KaizoshaUIKit": ("../..", ["KaizoshaUIKit"]),
+    "KaizoshaInterfaceKit": ("../..", ["KaizoshaInterfaceKit"]),
 }
 for name, (path, product_names) in packages.items():
     package = add(f"package-{name}", "XCLocalSwiftPackageReference", f"relativePath = {quoted(path)};")
@@ -79,13 +79,13 @@ for name, (path, product_names) in packages.items():
         products.append(product)
         frameworks.append(add(f"framework-{product_name}", "PBXBuildFile", f"productRef = {product};"))
 app_frameworks = add("app-frameworks", "PBXFrameworksBuildPhase", f"buildActionMask = 2147483647; files = {sequence(frameworks)}; runOnlyForDeploymentPostprocessing = 0;")
-app_product = add("app-product", "PBXFileReference", 'explicitFileType = wrapper.application; includeInIndex = 0; path = KaizoshaUIKit.app; sourceTree = BUILT_PRODUCTS_DIR;')
-test_product = add("test-product", "PBXFileReference", 'explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KaizoshaUIKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR;')
+app_product = add("app-product", "PBXFileReference", 'explicitFileType = wrapper.application; includeInIndex = 0; path = KaizoshaInterfaceKit.app; sourceTree = BUILT_PRODUCTS_DIR;')
+test_product = add("test-product", "PBXFileReference", 'explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KaizoshaInterfaceKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR;')
 product_group = add("products", "PBXGroup", f"children = {sequence([app_product, test_product])}; name = Products; sourceTree = \"<group>\";")
 all_files = [ref(p.relative_to(EXAMPLE).as_posix()) for p in source_paths + resources + test_paths]
 main_group = add("main-group", "PBXGroup", f"children = {sequence(all_files + [product_group])}; sourceTree = \"<group>\";")
 common = {
-    "IPHONEOS_DEPLOYMENT_TARGET": "27.0",
+    "IPHONEOS_DEPLOYMENT_TARGET": "26.0",
     "SWIFT_VERSION": "6.0",
     "SDKROOT": "iphoneos",
     "SUPPORTED_PLATFORMS": quoted("iphoneos iphonesimulator"),
@@ -97,16 +97,16 @@ common = {
 }
 app_settings = dict(
     common,
-    PRODUCT_NAME="KaizoshaUIKit",
-    PRODUCT_MODULE_NAME="KaizoshaUIKitApp",
+    PRODUCT_NAME="KaizoshaInterfaceKit",
+    PRODUCT_MODULE_NAME="KaizoshaInterfaceKitApp",
     PRODUCT_BUNDLE_IDENTIFIER="org.kaizosha.CustomKit",
-    INFOPLIST_KEY_CFBundleDisplayName=quoted("KaizoshaUIKit"),
-    INFOPLIST_KEY_NSMotionUsageDescription=quoted("KaizoshaUIKit uses device motion to move light across the Kaizōsha logo."),
+    INFOPLIST_KEY_CFBundleDisplayName=quoted("KaizoshaInterfaceKit"),
+    INFOPLIST_KEY_NSMotionUsageDescription=quoted("KaizoshaInterfaceKit uses device motion to move light across the Kaizōsha logo."),
     INFOPLIST_KEY_UILaunchScreen_Generation="YES",
     INFOPLIST_KEY_UIApplicationSceneManifest_Generation="YES",
     INFOPLIST_KEY_ITSAppUsesNonExemptEncryption="NO",
     INFOPLIST_KEY_LSApplicationCategoryType=quoted("public.app-category.developer-tools"),
-    CURRENT_PROJECT_VERSION="3",
+    CURRENT_PROJECT_VERSION="4",
     MARKETING_VERSION="1.0",
     ENABLE_PREVIEWS="YES",
     SKIP_INSTALL="NO",
@@ -114,20 +114,20 @@ app_settings = dict(
     INFOPLIST_KEY_UISupportedInterfaceOrientations=quoted("UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"),
 )
 app_configs = config_list("app", app_settings)
-test_configs = config_list("tests", dict(common, PRODUCT_BUNDLE_IDENTIFIER="org.kaizosha.KaizoshaUIKitUITests", TEST_TARGET_NAME="KaizoshaUIKitApp"))
-app_target = add("app-target", "PBXNativeTarget", f"buildConfigurationList = {app_configs}; buildPhases = {sequence([app_sources, app_frameworks, app_resources])}; buildRules = (); dependencies = (); name = KaizoshaUIKitApp; packageProductDependencies = {sequence(products)}; productName = KaizoshaUIKit; productReference = {app_product}; productType = \"com.apple.product-type.application\";")
-proxy = add("test-proxy", "PBXContainerItemProxy", f"containerPortal = {ref('project')}; proxyType = 1; remoteGlobalIDString = {app_target}; remoteInfo = KaizoshaUIKitApp;")
+test_configs = config_list("tests", dict(common, PRODUCT_BUNDLE_IDENTIFIER="org.kaizosha.KaizoshaInterfaceKitUITests", TEST_TARGET_NAME="KaizoshaInterfaceKitApp"))
+app_target = add("app-target", "PBXNativeTarget", f"buildConfigurationList = {app_configs}; buildPhases = {sequence([app_sources, app_frameworks, app_resources])}; buildRules = (); dependencies = (); name = KaizoshaInterfaceKitApp; packageProductDependencies = {sequence(products)}; productName = KaizoshaInterfaceKit; productReference = {app_product}; productType = \"com.apple.product-type.application\";")
+proxy = add("test-proxy", "PBXContainerItemProxy", f"containerPortal = {ref('project')}; proxyType = 1; remoteGlobalIDString = {app_target}; remoteInfo = KaizoshaInterfaceKitApp;")
 dependency = add("test-dependency", "PBXTargetDependency", f"target = {app_target}; targetProxy = {proxy};")
-test_target = add("test-target", "PBXNativeTarget", f"buildConfigurationList = {test_configs}; buildPhases = {sequence([test_sources, test_frameworks])}; buildRules = (); dependencies = {sequence([dependency])}; name = KaizoshaUIKitUITests; productName = KaizoshaUIKitUITests; productReference = {test_product}; productType = \"com.apple.product-type.bundle.ui-testing\";")
+test_target = add("test-target", "PBXNativeTarget", f"buildConfigurationList = {test_configs}; buildPhases = {sequence([test_sources, test_frameworks])}; buildRules = (); dependencies = {sequence([dependency])}; name = KaizoshaInterfaceKitUITests; productName = KaizoshaInterfaceKitUITests; productReference = {test_product}; productType = \"com.apple.product-type.bundle.ui-testing\";")
 project_configs = config_list("project", {"CLANG_ENABLE_MODULES": "YES", "SWIFT_STRICT_CONCURRENCY": "complete"})
 project = add("project", "PBXProject", f"attributes = {{BuildIndependentTargetsInParallel = YES; LastUpgradeCheck = 2700; TargetAttributes = {{{test_target} = {{TestTargetID = {app_target};}};}};}}; buildConfigurationList = {project_configs}; compatibilityVersion = \"Xcode 16.0\"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = {main_group}; packageReferences = {sequence(package_refs)}; productRefGroup = {product_group}; projectDirPath = \"\"; projectRoot = \"\"; targets = {sequence([app_target, test_target])};")
 body = "\n".join(f"\t\t{key} = {{{value}}};" for key, value in objects.items())
 (PROJECT / "project.pbxproj").write_text(f"// !$*UTF8*$!\n{{\n\tarchiveVersion = 1;\n\tclasses = {{}};\n\tobjectVersion = 77;\n\tobjects = {{\n{body}\n\t}};\n\trootObject = {project};\n}}\n")
 scheme_dir = PROJECT / "xcshareddata/xcschemes"
 scheme_dir.mkdir(parents=True, exist_ok=True)
-app_reference = f'<BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{app_target}" BuildableName="KaizoshaUIKit.app" BlueprintName="KaizoshaUIKitApp" ReferencedContainer="container:KaizoshaUIKit.xcodeproj"/>'
-test_reference = f'<BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{test_target}" BuildableName="KaizoshaUIKitUITests.xctest" BlueprintName="KaizoshaUIKitUITests" ReferencedContainer="container:KaizoshaUIKit.xcodeproj"/>'
-(scheme_dir / "KaizoshaUIKit.xcscheme").write_text(f'''<?xml version="1.0" encoding="UTF-8"?>
+app_reference = f'<BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{app_target}" BuildableName="KaizoshaInterfaceKit.app" BlueprintName="KaizoshaInterfaceKitApp" ReferencedContainer="container:KaizoshaInterfaceKit.xcodeproj"/>'
+test_reference = f'<BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{test_target}" BuildableName="KaizoshaInterfaceKitUITests.xctest" BlueprintName="KaizoshaInterfaceKitUITests" ReferencedContainer="container:KaizoshaInterfaceKit.xcodeproj"/>'
+(scheme_dir / "KaizoshaInterfaceKit.xcscheme").write_text(f'''<?xml version="1.0" encoding="UTF-8"?>
 <Scheme LastUpgradeVersion="2700" version="1.3">
   <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES"><BuildActionEntries><BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">{app_reference}</BuildActionEntry></BuildActionEntries></BuildAction>
   <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES"><Testables><TestableReference skipped="NO">{test_reference}</TestableReference></Testables></TestAction>

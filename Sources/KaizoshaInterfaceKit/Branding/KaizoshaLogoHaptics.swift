@@ -1,6 +1,6 @@
 //
 //  KaizoshaLogoHaptics.swift
-//  KaizoshaUIKit
+//  KaizoshaInterfaceKit
 //
 
 import UIKit

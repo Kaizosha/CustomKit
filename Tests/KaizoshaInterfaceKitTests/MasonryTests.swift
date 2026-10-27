@@ -1,6 +1,6 @@
 import SwiftUI
 import Testing
-@testable import KaizoshaUIKit
+@testable import KaizoshaInterfaceKit
 
 @Suite("Masonry placement")
 struct MasonryTests {

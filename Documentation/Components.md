@@ -2,7 +2,7 @@
 
 ## Kaizosha Logo
 
-Import `KaizoshaUIKit` and instantiate `KaizoshaLogo(configuration:onOpenCredits:)`.
+Import `KaizoshaInterfaceKit` and instantiate `KaizoshaLogo(configuration:onOpenCredits:)`.
 
 `LogoConfiguration` provides the following values:
 

@@ -1,12 +1,12 @@
 //
 //  LogoLightingTests.swift
-//  KaizoshaUIKitTests
+//  KaizoshaInterfaceKitTests
 //
 
 import CoreGraphics
 import Testing
 import UIKit
-@testable import KaizoshaUIKit
+@testable import KaizoshaInterfaceKit
 
 struct KaizoshaLogoLightingTests {
     @Test func portraitGravityPlacesLightOnRaisedSideOfDisplay() {

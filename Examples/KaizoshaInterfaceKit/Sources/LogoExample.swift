@@ -1,4 +1,4 @@
-import KaizoshaUIKit
+import KaizoshaInterfaceKit
 import SwiftUI
 
 struct LogoExample: View {
@@ -25,7 +25,7 @@ struct LogoExample: View {
     }
 
     private let code = """
-    import KaizoshaUIKit
+    import KaizoshaInterfaceKit
 
     KaizoshaLogo()
 

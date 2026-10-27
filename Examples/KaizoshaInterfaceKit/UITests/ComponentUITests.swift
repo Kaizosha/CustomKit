@@ -23,13 +23,13 @@ final class ComponentUITests: XCTestCase {
             app.buttons["component.reset"].tap()
             reveal(app.buttons["component.code"])
             app.buttons["component.code"].tap()
-            XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "import KaizoshaUIKit")).firstMatch.exists)
+            XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "import KaizoshaInterfaceKit")).firstMatch.exists)
             app.buttons["Copy"].tap()
             XCTAssertTrue(app.buttons["Copied"].exists)
             app.navigationBars["Use in your app"].buttons["Customize"].tap()
             app.buttons["customize.done"].tap()
             app.navigationBars.buttons.element(boundBy: 0).tap()
-            XCTAssertTrue(app.navigationBars["KaizoshaUIKit"].waitForExistence(timeout: 4))
+            XCTAssertTrue(app.navigationBars["KaizoshaInterfaceKit"].waitForExistence(timeout: 4))
         }
     }
 

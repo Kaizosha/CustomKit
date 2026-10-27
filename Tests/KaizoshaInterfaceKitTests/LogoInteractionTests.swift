@@ -1,6 +1,6 @@
 import CoreGraphics
 import Testing
-@testable import KaizoshaUIKit
+@testable import KaizoshaInterfaceKit
 
 struct LogoInteractionTests {
     @Test func reducedMotionKeepsTheMarkBoundedWithoutDeformation() {

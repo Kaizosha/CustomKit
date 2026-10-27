@@ -1,4 +1,4 @@
-import KaizoshaUIKit
+import KaizoshaInterfaceKit
 import SwiftUI
 
 struct CreditsExample: View {
@@ -29,7 +29,7 @@ struct CreditsExample: View {
     }
 
     private let code = """
-    import KaizoshaUIKit
+    import KaizoshaInterfaceKit
 
     @State private var showsCredits = false
 
