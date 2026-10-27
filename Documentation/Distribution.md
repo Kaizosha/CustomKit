@@ -1,6 +1,6 @@
 # Deliver KaizoshaInterfaceKit to TestFlight
 
-The display name is **KaizoshaInterfaceKit**. The shipping identity remains `org.kaizosha.CustomKit`, company team `564DV375U4`, App Store Connect app `6827106597`. The next archive uses version `1.0`, build `4`. Build `3`, distributed as KaizoshaUIKit, is available in the existing Kon's Testing group.
+The display name is **KaizoshaInterfaceKit**. The shipping identity remains `org.kaizosha.CustomKit`, company team `564DV375U4`, App Store Connect app `6827106597`. Version `1.0 (4)` is Testing in the existing Kon's Testing group. Increment the generator's build number and regenerate the project before a new upload.
 
 ## Create the archive
 
@@ -29,6 +29,26 @@ Read the archived app's metadata, verify its signature, and confirm that the bun
 6. Verify that the group reports the build as Testing.
 
 The [TestFlight record](https://appstoreconnect.apple.com/apps/6827106597/testflight) uses the existing app ID. Do not claim upload, group availability, or physical installation from a local archive alone.
+
+## Current build 4 state
+
+The renamed example app includes the Native Glass Button presets, customization,
+and generated usage code. Its signed archive and distribution retain the original
+app identity, iPhone/iPad device families, and iOS 26 minimum. Command-line export
+and upload succeeded using the existing Xcode account and internal-only options.
+App Store Connect processing is complete and Kon's Testing reports **Testing**.
+The visible App Store Connect name is also KaizoshaInterfaceKit.
+
+- Package release: `0.3.0`, source `033ed669c177809f92e7bf0de3c4034bed006ae6`.
+- Archive: `/tmp/KaizoshaInterfaceKit42/KaizoshaInterfaceKit-1.0-4.xcarchive`.
+- Distribution: `/tmp/KaizoshaInterfaceKit42/KitDistribution/KaizoshaInterfaceKit.ipa`.
+- Upload log: `/tmp/KaizoshaInterfaceKit42/kit-upload.log`.
+- Build ID: `8bdaf34f-22eb-43f8-b381-3de65d664e28`.
+- Group: `1edd3d1b-a5e3-4cc1-8385-d3f1cd191428`.
+- Testing proof: `/tmp/KaizoshaInterfaceKit42/kit-build4-testing.png`.
+
+This is private TestFlight delivery, not public App Store submission or proof of
+physical installation. Physical iPad validation remains deferred.
 
 ## Build 3 delivery receipt
 

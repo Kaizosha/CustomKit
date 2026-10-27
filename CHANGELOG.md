@@ -7,7 +7,7 @@
 - Added six button/menu presets, live customization, and copyable current usage in the example app.
 - Supports iOS and iPadOS 26 with the existing Xcode 27 / Swift 6.4 toolchain.
 
-## 1.0 build 4 (unreleased)
+## 1.0 build 4
 
 - Renamed the package, product, import module, and example app to KaizoshaInterfaceKit.
 - Set the package and example app minimum deployment target to iOS 26.
