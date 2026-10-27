@@ -20,6 +20,8 @@ struct KaizoshaInterfaceKitApp: App {
                         .accessibilityIdentifier("catalog.strategy-switcher")
                     NavigationLink("Masonry Layout") { MasonryExample() }
                         .accessibilityIdentifier("catalog.masonry-layout")
+                    NavigationLink("Native Glass Button") { NativeGlassButtonExample() }
+                        .accessibilityIdentifier("catalog.native-glass-button")
                 }
                 .listStyle(.plain)
                 .navigationTitle("KaizoshaInterfaceKit")

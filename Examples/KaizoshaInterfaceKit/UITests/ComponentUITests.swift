@@ -11,7 +11,7 @@ final class ComponentUITests: XCTestCase {
     }
 
     func testEveryComponentHasCustomizationResetAndImportCode() {
-        let ids = ["made-by-kaizosha", "unlock-together", "translation-pill", "language-switcher", "strategy-switcher", "masonry-layout"]
+        let ids = ["made-by-kaizosha", "unlock-together", "translation-pill", "language-switcher", "strategy-switcher", "masonry-layout", "native-glass-button"]
         for id in ids {
             app.buttons["catalog.\(id)"].tap()
             XCTAssertTrue(app.buttons["component.customize"].waitForExistence(timeout: 4))
