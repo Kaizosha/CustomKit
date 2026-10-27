@@ -17,6 +17,8 @@ UI tests retain screenshots in their result bundle. Use `xcrun xcresulttool expo
 
 Physical device tilt and tactile feel remain device checks. Simulator tests verify lifecycle and bounded input, not physical sensation.
 
+Build 3 completed Apple processing and is Testing in Kon's Testing. See [delivery](Distribution.md).
+
 ## Repeat native inspection
 
 Run `Scripts/inspect-with-rea.sh APP NODE REA_CLI OUTPUT_DIRECTORY` for supplementary native analysis. Binary inspection does not establish visual parity or interaction behavior.
